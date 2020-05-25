@@ -3,476 +3,789 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		"CANHack::CANHackPackageTests::ProductTarget" /* CANHackPackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_58 /* Build configuration list for PBXAggregateTarget "CANHackPackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_61 /* PBXTargetDependency */,
+			);
+			name = CANHackPackageTests;
+			productName = CANHackPackageTests;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		732F6225247B3009000F0530 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F6224247B3009000F0530 /* AppDelegate.swift */; };
-		732F6227247B3009000F0530 /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F6226247B3009000F0530 /* DocumentBrowserViewController.swift */; };
-		732F6229247B3009000F0530 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F6228247B3009000F0530 /* DocumentView.swift */; };
-		732F622B247B3009000F0530 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F622A247B3009000F0530 /* Document.swift */; };
-		732F622E247B3009000F0530 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732F622C247B3009000F0530 /* Main.storyboard */; };
-		732F6230247B300D000F0530 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 732F622F247B300D000F0530 /* Assets.xcassets */; };
-		732F6233247B300D000F0530 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732F6231247B300D000F0530 /* LaunchScreen.storyboard */; };
-		732F623E247B300D000F0530 /* CANHackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F623D247B300D000F0530 /* CANHackTests.swift */; };
+		73CFBB0A247B578F005743E4 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
+		73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 73D23E5B247B813E00C307AA /* SmartCarUI */; };
+		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
+		OBJ_42 /* GVRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* GVRET.swift */; };
+		OBJ_43 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Message.swift */; };
+		OBJ_44 /* MessageID.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* MessageID.swift */; };
+		OBJ_45 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Parser.swift */; };
+		OBJ_46 /* GroupedSignalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* GroupedSignalSet.swift */; };
+		OBJ_47 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ObservableArray.swift */; };
+		OBJ_48 /* SignalInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* SignalInstance.swift */; };
+		OBJ_49 /* SignalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* SignalSet.swift */; };
+		OBJ_56 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_67 /* CANHackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* CANHackTests.swift */; };
+		OBJ_69 /* CANHackUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHackUI::Product" /* CANHackUI.framework */; };
+		OBJ_70 /* CANHack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHack::Product" /* CANHack.framework */; };
+		OBJ_79 /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* BinaryDataView.swift */; };
+		OBJ_81 /* MessageSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* MessageSetView.swift */; };
+		OBJ_82 /* MessageStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* MessageStatView.swift */; };
+		OBJ_83 /* OccuranceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* OccuranceGraphView.swift */; };
+		OBJ_85 /* CANHack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHack::Product" /* CANHack.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		732F623A247B300D000F0530 /* PBXContainerItemProxy */ = {
+		73CFBAD5247B43E6005743E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 732F6219247B3009000F0530 /* Project object */;
+			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 732F6220247B3009000F0530;
+			remoteGlobalIDString = "CANHack::CANHack";
 			remoteInfo = CANHack;
+		};
+		73CFBAD6247B43E6005743E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "CANHack::CANHackUI";
+			remoteInfo = CANHackUI;
+		};
+		73CFBAD7247B43E6005743E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "CANHack::CANHack";
+			remoteInfo = CANHack;
+		};
+		73CFBAD8247B43E7005743E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "CANHack::CANHackTests";
+			remoteInfo = CANHackTests;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		732F6221247B3009000F0530 /* CANHack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CANHack.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		732F6224247B3009000F0530 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		732F6226247B3009000F0530 /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
-		732F6228247B3009000F0530 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
-		732F622A247B3009000F0530 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		732F622D247B3009000F0530 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		732F622F247B300D000F0530 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		732F6232247B300D000F0530 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		732F6234247B300D000F0530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		732F6239247B300D000F0530 /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		732F623D247B300D000F0530 /* CANHackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CANHackTests.swift; sourceTree = "<group>"; };
-		732F623F247B300D000F0530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"CANHack::CANHackTests::Product" /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"CANHack::CANHackUI::Product" /* CANHackUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHackUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_10 /* GVRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GVRET.swift; sourceTree = "<group>"; };
+		OBJ_11 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		OBJ_12 /* MessageID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageID.swift; sourceTree = "<group>"; };
+		OBJ_13 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		OBJ_15 /* GroupedSignalSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedSignalSet.swift; sourceTree = "<group>"; };
+		OBJ_16 /* ObservableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
+		OBJ_17 /* SignalInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalInstance.swift; sourceTree = "<group>"; };
+		OBJ_18 /* SignalSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalSet.swift; sourceTree = "<group>"; };
+		OBJ_22 /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BinaryDataView.swift; path = Graphing/BinaryDataView.swift; sourceTree = "<group>"; };
+		OBJ_24 /* MessageSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetView.swift; sourceTree = "<group>"; };
+		OBJ_25 /* MessageStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatView.swift; sourceTree = "<group>"; };
+		OBJ_26 /* OccuranceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccuranceGraphView.swift; sourceTree = "<group>"; };
+		OBJ_29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		OBJ_30 /* CANHackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CANHackTests.swift; sourceTree = "<group>"; };
+		OBJ_35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		732F621E247B3009000F0530 /* Frameworks */ = {
+		OBJ_50 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		732F6236247B300D000F0530 /* Frameworks */ = {
+		OBJ_68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
+				OBJ_69 /* CANHackUI.framework in Frameworks */,
+				OBJ_70 /* CANHack.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_85 /* CANHack.framework in Frameworks */,
+				73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		732F6218247B3009000F0530 = {
+		73CFBB14247B667F005743E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				732F6223247B3009000F0530 /* CANHack */,
-				732F623C247B300D000F0530 /* CANHackTests */,
-				732F6222247B3009000F0530 /* Products */,
 			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		732F6222247B3009000F0530 /* Products */ = {
+		OBJ_14 /* Signal Occurance */ = {
 			isa = PBXGroup;
 			children = (
-				732F6221247B3009000F0530 /* CANHack.app */,
-				732F6239247B300D000F0530 /* CANHackTests.xctest */,
+				OBJ_15 /* GroupedSignalSet.swift */,
+				OBJ_16 /* ObservableArray.swift */,
+				OBJ_17 /* SignalInstance.swift */,
+				OBJ_18 /* SignalSet.swift */,
+			);
+			path = "Signal Occurance";
+			sourceTree = "<group>";
+		};
+		OBJ_19 /* CANHackUI */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_22 /* BinaryDataView.swift */,
+				OBJ_24 /* MessageSetView.swift */,
+				OBJ_25 /* MessageStatView.swift */,
+				OBJ_26 /* OccuranceGraphView.swift */,
+			);
+			name = CANHackUI;
+			path = Sources/CANHackUI;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_27 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_28 /* CANHackTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_28 /* CANHackTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_29 /* Info.plist */,
+				OBJ_30 /* CANHackTests.swift */,
+			);
+			name = CANHackTests;
+			path = Tests/CANHackTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"CANHack::CANHackUI::Product" /* CANHackUI.framework */,
+				"CANHack::CANHack::Product" /* CANHack.framework */,
+				"CANHack::CANHackTests::Product" /* CANHackTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		732F6223247B3009000F0530 /* CANHack */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				732F6224247B3009000F0530 /* AppDelegate.swift */,
-				732F6226247B3009000F0530 /* DocumentBrowserViewController.swift */,
-				732F6228247B3009000F0530 /* DocumentView.swift */,
-				732F622A247B3009000F0530 /* Document.swift */,
-				732F622C247B3009000F0530 /* Main.storyboard */,
-				732F622F247B300D000F0530 /* Assets.xcassets */,
-				732F6231247B300D000F0530 /* LaunchScreen.storyboard */,
-				732F6234247B300D000F0530 /* Info.plist */,
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_27 /* Tests */,
+				OBJ_31 /* Products */,
+				OBJ_35 /* README.md */,
+				73CFBB14247B667F005743E4 /* Frameworks */,
 			);
-			path = CANHack;
 			sourceTree = "<group>";
 		};
-		732F623C247B300D000F0530 /* CANHackTests */ = {
+		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				732F623D247B300D000F0530 /* CANHackTests.swift */,
-				732F623F247B300D000F0530 /* Info.plist */,
+				OBJ_8 /* CANHack */,
+				OBJ_19 /* CANHackUI */,
 			);
-			path = CANHackTests;
-			sourceTree = "<group>";
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_8 /* CANHack */ = {
+			isa = PBXGroup;
+			children = (
+				73CFBB09247B578F005743E4 /* Mock.swift */,
+				OBJ_9 /* Byte.swift */,
+				OBJ_10 /* GVRET.swift */,
+				OBJ_11 /* Message.swift */,
+				OBJ_12 /* MessageID.swift */,
+				OBJ_13 /* Parser.swift */,
+				OBJ_14 /* Signal Occurance */,
+			);
+			name = CANHack;
+			path = Sources/CANHack;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		732F6220247B3009000F0530 /* CANHack */ = {
+		"CANHack::CANHack" /* CANHack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 732F6242247B300D000F0530 /* Build configuration list for PBXNativeTarget "CANHack" */;
+			buildConfigurationList = OBJ_37 /* Build configuration list for PBXNativeTarget "CANHack" */;
 			buildPhases = (
-				732F621D247B3009000F0530 /* Sources */,
-				732F621E247B3009000F0530 /* Frameworks */,
-				732F621F247B3009000F0530 /* Resources */,
+				OBJ_40 /* Sources */,
+				OBJ_50 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = CANHack;
+			packageProductDependencies = (
+			);
 			productName = CANHack;
-			productReference = 732F6221247B3009000F0530 /* CANHack.app */;
-			productType = "com.apple.product-type.application";
+			productReference = "CANHack::CANHack::Product" /* CANHack.framework */;
+			productType = "com.apple.product-type.framework";
 		};
-		732F6238247B300D000F0530 /* CANHackTests */ = {
+		"CANHack::CANHackTests" /* CANHackTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 732F6245247B300D000F0530 /* Build configuration list for PBXNativeTarget "CANHackTests" */;
+			buildConfigurationList = OBJ_63 /* Build configuration list for PBXNativeTarget "CANHackTests" */;
 			buildPhases = (
-				732F6235247B300D000F0530 /* Sources */,
-				732F6236247B300D000F0530 /* Frameworks */,
-				732F6237247B300D000F0530 /* Resources */,
+				OBJ_66 /* Sources */,
+				OBJ_68 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				732F623B247B300D000F0530 /* PBXTargetDependency */,
+				OBJ_71 /* PBXTargetDependency */,
+				OBJ_73 /* PBXTargetDependency */,
 			);
 			name = CANHackTests;
 			productName = CANHackTests;
-			productReference = 732F6239247B300D000F0530 /* CANHackTests.xctest */;
+			productReference = "CANHack::CANHackTests::Product" /* CANHackTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		"CANHack::CANHackUI" /* CANHackUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_74 /* Build configuration list for PBXNativeTarget "CANHackUI" */;
+			buildPhases = (
+				OBJ_77 /* Sources */,
+				OBJ_84 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_86 /* PBXTargetDependency */,
+			);
+			name = CANHackUI;
+			packageProductDependencies = (
+				73D23E5B247B813E00C307AA /* SmartCarUI */,
+			);
+			productName = CANHackUI;
+			productReference = "CANHack::CANHackUI::Product" /* CANHackUI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"CANHack::SwiftPMPackageDescription" /* CANHackPackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_52 /* Build configuration list for PBXNativeTarget "CANHackPackageDescription" */;
+			buildPhases = (
+				OBJ_55 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CANHackPackageDescription;
+			productName = CANHackPackageDescription;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		732F6219247B3009000F0530 /* Project object */ = {
+		OBJ_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 9999;
 				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1150;
-				ORGANIZATIONNAME = "Robert Smith";
 				TargetAttributes = {
-					732F6220247B3009000F0530 = {
-						CreatedOnToolsVersion = 11.5;
+					"CANHack::CANHack" = {
+						DevelopmentTeam = CB8792S7AP;
+						ProvisioningStyle = Automatic;
 					};
-					732F6238247B300D000F0530 = {
-						CreatedOnToolsVersion = 11.5;
-						TestTargetID = 732F6220247B3009000F0530;
+					"CANHack::CANHackUI" = {
+						DevelopmentTeam = CB8792S7AP;
+						ProvisioningStyle = Automatic;
+					};
+					"CANHack::SwiftPMPackageDescription" = {
+						DevelopmentTeam = CB8792S7AP;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 732F621C247B3009000F0530 /* Build configuration list for PBXProject "CANHack" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "CANHack" */;
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
-			mainGroup = 732F6218247B3009000F0530;
-			productRefGroup = 732F6222247B3009000F0530 /* Products */;
+			mainGroup = OBJ_5;
+			packageReferences = (
+				73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */,
+			);
+			productRefGroup = OBJ_31 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				732F6220247B3009000F0530 /* CANHack */,
-				732F6238247B300D000F0530 /* CANHackTests */,
+				"CANHack::CANHack" /* CANHack */,
+				"CANHack::SwiftPMPackageDescription" /* CANHackPackageDescription */,
+				"CANHack::CANHackPackageTests::ProductTarget" /* CANHackPackageTests */,
+				"CANHack::CANHackTests" /* CANHackTests */,
+				"CANHack::CANHackUI" /* CANHackUI */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		732F621F247B3009000F0530 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				732F6233247B300D000F0530 /* LaunchScreen.storyboard in Resources */,
-				732F6230247B300D000F0530 /* Assets.xcassets in Resources */,
-				732F622E247B3009000F0530 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		732F6237247B300D000F0530 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		732F621D247B3009000F0530 /* Sources */ = {
+		OBJ_40 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				732F622B247B3009000F0530 /* Document.swift in Sources */,
-				732F6227247B3009000F0530 /* DocumentBrowserViewController.swift in Sources */,
-				732F6229247B3009000F0530 /* DocumentView.swift in Sources */,
-				732F6225247B3009000F0530 /* AppDelegate.swift in Sources */,
+				OBJ_41 /* Byte.swift in Sources */,
+				73CFBB0A247B578F005743E4 /* Mock.swift in Sources */,
+				OBJ_42 /* GVRET.swift in Sources */,
+				OBJ_43 /* Message.swift in Sources */,
+				OBJ_44 /* MessageID.swift in Sources */,
+				OBJ_45 /* Parser.swift in Sources */,
+				OBJ_46 /* GroupedSignalSet.swift in Sources */,
+				OBJ_47 /* ObservableArray.swift in Sources */,
+				OBJ_48 /* SignalInstance.swift in Sources */,
+				OBJ_49 /* SignalSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		732F6235247B300D000F0530 /* Sources */ = {
+		OBJ_55 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				732F623E247B300D000F0530 /* CANHackTests.swift in Sources */,
+				OBJ_56 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_67 /* CANHackTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_79 /* BinaryDataView.swift in Sources */,
+				OBJ_81 /* MessageSetView.swift in Sources */,
+				OBJ_82 /* MessageStatView.swift in Sources */,
+				OBJ_83 /* OccuranceGraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		732F623B247B300D000F0530 /* PBXTargetDependency */ = {
+		OBJ_61 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 732F6220247B3009000F0530 /* CANHack */;
-			targetProxy = 732F623A247B300D000F0530 /* PBXContainerItemProxy */;
+			target = "CANHack::CANHackTests" /* CANHackTests */;
+			targetProxy = 73CFBAD8247B43E7005743E4 /* PBXContainerItemProxy */;
+		};
+		OBJ_71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "CANHack::CANHackUI" /* CANHackUI */;
+			targetProxy = 73CFBAD6247B43E6005743E4 /* PBXContainerItemProxy */;
+		};
+		OBJ_73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "CANHack::CANHack" /* CANHack */;
+			targetProxy = 73CFBAD7247B43E6005743E4 /* PBXContainerItemProxy */;
+		};
+		OBJ_86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "CANHack::CANHack" /* CANHack */;
+			targetProxy = 73CFBAD5247B43E6005743E4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		732F622C247B3009000F0530 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				732F622D247B3009000F0530 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		732F6231247B300D000F0530 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				732F6232247B300D000F0530 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		732F6240247B300D000F0530 /* Debug */ = {
+		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
-		732F6241247B300D000F0530 /* Release */ = {
+		OBJ_38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CB8792S7AP;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHack_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CANHack;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_NAME = CANHack;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		OBJ_39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CB8792S7AP;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHack_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CANHack;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_NAME = CANHack;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				VALIDATE_PRODUCT = YES;
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
-		732F6243247B300D000F0530 /* Debug */ = {
+		OBJ_53 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CB8792S7AP;
-				INFOPLIST_FILE = CANHack/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = RJSDev.CANHack;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.2.0";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		732F6244247B300D000F0530 /* Release */ = {
+		OBJ_54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CB8792S7AP;
-				INFOPLIST_FILE = CANHack/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = RJSDev.CANHack;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.2.0";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		732F6246247B300D000F0530 /* Debug */ = {
+		OBJ_59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CB8792S7AP;
-				INFOPLIST_FILE = CANHackTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = RJSDev.CANHackTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CANHack.app/CANHack";
 			};
 			name = Debug;
 		};
-		732F6247247B300D000F0530 /* Release */ = {
+		OBJ_60 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CB8792S7AP;
-				INFOPLIST_FILE = CANHackTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+			};
+			name = Release;
+		};
+		OBJ_64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHackTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = RJSDev.CANHackTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = CANHackTests;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		OBJ_65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHackTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = CANHackTests;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		OBJ_75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CB8792S7AP;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHackUI_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CANHackUI;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CANHack.app/CANHack";
+				TARGET_NAME = CANHackUI;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		OBJ_76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CB8792S7AP;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CANHack.xcodeproj/CANHackUI_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CANHackUI;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGET_NAME = CANHackUI;
+				TVOS_DEPLOYMENT_TARGET = 13.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		732F621C247B3009000F0530 /* Build configuration list for PBXProject "CANHack" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "CANHack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				732F6240247B300D000F0530 /* Debug */,
-				732F6241247B300D000F0530 /* Release */,
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		732F6242247B300D000F0530 /* Build configuration list for PBXNativeTarget "CANHack" */ = {
+		OBJ_37 /* Build configuration list for PBXNativeTarget "CANHack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				732F6243247B300D000F0530 /* Debug */,
-				732F6244247B300D000F0530 /* Release */,
+				OBJ_38 /* Debug */,
+				OBJ_39 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		732F6245247B300D000F0530 /* Build configuration list for PBXNativeTarget "CANHackTests" */ = {
+		OBJ_52 /* Build configuration list for PBXNativeTarget "CANHackPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				732F6246247B300D000F0530 /* Debug */,
-				732F6247247B300D000F0530 /* Release */,
+				OBJ_53 /* Debug */,
+				OBJ_54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_58 /* Build configuration list for PBXAggregateTarget "CANHackPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_59 /* Debug */,
+				OBJ_60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_63 /* Build configuration list for PBXNativeTarget "CANHackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_64 /* Debug */,
+				OBJ_65 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_74 /* Build configuration list for PBXNativeTarget "CANHackUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_75 /* Debug */,
+				OBJ_76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:CarSmarts/SmartCarUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		73D23E5B247B813E00C307AA /* SmartCarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */;
+			productName = SmartCarUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 732F6219247B3009000F0530 /* Project object */;
+	rootObject = OBJ_1 /* Project object */;
 }
