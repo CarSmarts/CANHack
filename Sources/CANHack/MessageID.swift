@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct MessageID : Signal {
+public struct MessageID : Signal, ExpressibleByIntegerLiteral {
     public typealias RawValue = UInt32
     
     public var rawValue: UInt32
@@ -17,12 +17,17 @@ public struct MessageID : Signal {
         rawValue
     }
     
-    public init?(rawValue: UInt32, extended: Bool = false) {
-        self.rawValue = rawValue
-        self.extended = extended
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.rawValue = UInt32(value)
     }
     
-    public var extended: Bool
+    public init?(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+    
+    public var extended: Bool {
+        return rawValue > 0x7FF
+    }
 }
 
 public extension MessageID {

@@ -46,6 +46,7 @@ public struct Mock {
     79168,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
     80374,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
     81266,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
+    81276,0xAF81111,true,Rx,1,2,00,00
     81581,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
     82473,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
     84571,0x12F85351,true,Rx,1,6,49,00,00,00,00,00
@@ -179,5 +180,17 @@ public struct Mock {
         GroupedSignalSet(grouping: mockTestSet) { stat in
             stat.signal.id
         }
+    }
+    
+    public static var mockDecoder: CarDecoder {
+        let decoder = CarDecoder([
+            DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
+        ])
+        
+        return decoder
+    }
+    
+    public static var mockModel: CanBusModel {
+        return CanBusModel(signalSet: mockTestSet, decoder: mockDecoder)
     }
 }

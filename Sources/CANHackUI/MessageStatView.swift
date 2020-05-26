@@ -16,9 +16,85 @@ struct Monospaced: ViewModifier {
     }
 }
 
-struct MessageStatView: View {
-    @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
+struct MessageIDView: View {
+    public init(id: MessageID) {
+        self.id = id
+    }
+    
+    @EnvironmentObject public var model: CanBusModel
+    public let id: MessageID
+    
+    var decoder: DecoderMessage {
+        model.decoder[id]
+    }
+    
+    enum EditingType {
+        case none, name, sender
+    }
+    
+    @State private var edititng: EditingType = .none
+    @State private var nameScratch: String = ""
+    @State private var senderScratch: String = ""
 
+    func endEditing() {
+        if edititng == .name {
+            decoder.name = nameScratch
+            nameScratch = ""
+        } else if edititng == .sender {
+            decoder.sendingNode = senderScratch
+            senderScratch = ""
+        }
+        
+        edititng = .none
+    }
+    
+    func startNameEdit() {
+        if edititng != .none {
+            endEditing()
+        }
+        edititng = .name
+        nameScratch = decoder.name
+    }
+    
+    func startSenderEdit() {
+        if edititng != .none {
+            endEditing()
+        }
+        edititng = .sender
+        senderScratch = decoder.sendingNode
+    }
+
+    
+    var body: some View {
+        HStack {
+            Text(id.description)
+                .font(.headline)
+                .modifier(Monospaced())
+            
+            if (edititng == .name) {
+                TextField("name", text: $nameScratch, onCommit: endEditing)
+            } else {
+                Text(decoder.name)
+                .fontWeight(.light)
+                .onTapGesture(perform: startNameEdit)
+            }
+            
+            if (edititng == .sender) {
+                TextField("Sender", text: $senderScratch, onCommit: endEditing)
+            } else {
+                Text("(" + decoder.sendingNode + ")")
+                .fontWeight(.ultraLight)
+                .onTapGesture(perform: startSenderEdit)
+
+            }
+        }
+    }
+}
+
+struct MessageStatView: View {
+    @EnvironmentObject public var model: CanBusModel
+    @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
+    
     var shortList: ArraySlice<SignalStat<Message>> {
         groupStats.stats.prefix(10)
     }
@@ -35,10 +111,9 @@ struct MessageStatView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: nil) {
-            Text(groupStats.group.description)
-                .font(.headline)
-                .modifier(Monospaced())
 
+            MessageIDView(id: groupStats.group)
+            
             VStack(alignment: .leading, spacing: 2) {
                 ForEach(shortList, id: \.signal) { signalStat in
                     ZStack(alignment: .leading) {
@@ -69,19 +144,28 @@ struct MessageStatView_Previews: PreviewProvider {
         let goodExample = groupedSet.stats.first { stat in
             stat.stats.count > 1
         }
+        
+        let testExample = groupedSet.stats.first { stat in
+            stat.group == MessageID(rawValue: 0xAF81111)!
+        }
 
         let longExample = groupedSet.stats.first { stat in
             stat.group == MessageID(rawValue: 0x12F85351)
         }
         
         return Group {
-            Unwrap(goodExample) {
+//            Unwrap(goodExample) {
+//                MessageStatView(groupStats: $0)
+//            }
+            
+            Unwrap(testExample) {
                 MessageStatView(groupStats: $0)
             }
             
-            Unwrap(longExample) {
-                MessageStatView(groupStats: $0)
-            }
+//            Unwrap(longExample) {
+//                MessageStatView(groupStats: $0)
+//            }
         }.previewLayout(.fixed(width: 375, height: 170))
+            .environmentObject(Mock.mockModel)
     }
 }

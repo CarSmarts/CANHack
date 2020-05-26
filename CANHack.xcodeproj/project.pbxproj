@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		730A803D247CAFA3009E00A5 /* CarDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A803C247CAFA3009E00A5 /* CarDecoder.swift */; };
+		730A803F247CBDE5009E00A5 /* CanBusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A803E247CBDE5009E00A5 /* CanBusModel.swift */; };
 		73CFBB0A247B578F005743E4 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
 		73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 73D23E5B247B813E00C307AA /* SmartCarUI */; };
 		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
@@ -76,6 +77,7 @@
 
 /* Begin PBXFileReference section */
 		730A803C247CAFA3009E00A5 /* CarDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarDecoder.swift; sourceTree = "<group>"; };
+		730A803E247CBDE5009E00A5 /* CanBusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanBusModel.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CANHack::CANHackTests::Product" /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,14 +129,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		730A803B247CAF12009E00A5 /* Car Decoder */ = {
-			isa = PBXGroup;
-			children = (
-				730A803C247CAFA3009E00A5 /* CarDecoder.swift */,
-			);
-			path = "Car Decoder";
-			sourceTree = "<group>";
-		};
 		73CFBB14247B667F005743E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,8 +210,9 @@
 		OBJ_8 /* CANHack */ = {
 			isa = PBXGroup;
 			children = (
-				730A803B247CAF12009E00A5 /* Car Decoder */,
 				73CFBB09247B578F005743E4 /* Mock.swift */,
+				730A803C247CAFA3009E00A5 /* CarDecoder.swift */,
+				730A803E247CBDE5009E00A5 /* CanBusModel.swift */,
 				OBJ_9 /* Byte.swift */,
 				OBJ_11 /* Message.swift */,
 				OBJ_12 /* MessageID.swift */,
@@ -361,6 +356,7 @@
 				OBJ_42 /* GVRET.swift in Sources */,
 				OBJ_43 /* Message.swift in Sources */,
 				OBJ_44 /* MessageID.swift in Sources */,
+				730A803F247CBDE5009E00A5 /* CanBusModel.swift in Sources */,
 				OBJ_45 /* Parser.swift in Sources */,
 				OBJ_46 /* GroupedSignalSet.swift in Sources */,
 				OBJ_47 /* ObservableArray.swift in Sources */,

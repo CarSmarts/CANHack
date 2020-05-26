@@ -11,27 +11,22 @@ import SwiftUI
 import CANHack
 
 public struct MessageSetView: View {
-    @ObservedObject public var messageSet: SignalSet<Message>
-    
-    public init(messageSet: SignalSet<Message>) {
-        self.messageSet = messageSet
+    @ObservedObject public var model: CanBusModel
+
+    public init(model: CanBusModel) {
+        self.model = model
     }
     
-    private var groupedMessages: GroupedSignalSet<Message, MessageID> {
-        GroupedSignalSet(grouping: messageSet, by: { (stat) -> MessageID in
-                stat.signal.id
-            })
-        }
-
     public var body: some View {
-        List(groupedMessages.groups) { group in
-            MessageStatView(groupStats: self.groupedMessages[group])
+        List(model.ids) { id in
+            MessageStatView(groupStats: self.model.groupedById[id])
         }
+        .environmentObject(model)
     }
 }
 
 struct MessageSetView_Previews: PreviewProvider {
     static var previews: some View {
-        MessageSetView(messageSet: Mock.mockTestSet)
+        MessageSetView(model: Mock.mockModel)
     }
 }
