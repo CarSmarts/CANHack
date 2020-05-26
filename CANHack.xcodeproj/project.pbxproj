@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		730A803D247CAFA3009E00A5 /* CarDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A803C247CAFA3009E00A5 /* CarDecoder.swift */; };
 		73CFBB0A247B578F005743E4 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
 		73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 73D23E5B247B813E00C307AA /* SmartCarUI */; };
 		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
@@ -36,7 +37,6 @@
 		OBJ_67 /* CANHackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* CANHackTests.swift */; };
 		OBJ_69 /* CANHackUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHackUI::Product" /* CANHackUI.framework */; };
 		OBJ_70 /* CANHack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHack::Product" /* CANHack.framework */; };
-		OBJ_79 /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* BinaryDataView.swift */; };
 		OBJ_81 /* MessageSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* MessageSetView.swift */; };
 		OBJ_82 /* MessageStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* MessageStatView.swift */; };
 		OBJ_83 /* OccuranceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* OccuranceGraphView.swift */; };
@@ -75,6 +75,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		730A803C247CAFA3009E00A5 /* CarDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarDecoder.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CANHack::CANHackTests::Product" /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,7 +88,6 @@
 		OBJ_16 /* ObservableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
 		OBJ_17 /* SignalInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalInstance.swift; sourceTree = "<group>"; };
 		OBJ_18 /* SignalSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalSet.swift; sourceTree = "<group>"; };
-		OBJ_22 /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BinaryDataView.swift; path = Graphing/BinaryDataView.swift; sourceTree = "<group>"; };
 		OBJ_24 /* MessageSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetView.swift; sourceTree = "<group>"; };
 		OBJ_25 /* MessageStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatView.swift; sourceTree = "<group>"; };
 		OBJ_26 /* OccuranceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccuranceGraphView.swift; sourceTree = "<group>"; };
@@ -127,6 +127,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		730A803B247CAF12009E00A5 /* Car Decoder */ = {
+			isa = PBXGroup;
+			children = (
+				730A803C247CAFA3009E00A5 /* CarDecoder.swift */,
+			);
+			path = "Car Decoder";
+			sourceTree = "<group>";
+		};
 		73CFBB14247B667F005743E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,7 +156,6 @@
 		OBJ_19 /* CANHackUI */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_22 /* BinaryDataView.swift */,
 				OBJ_24 /* MessageSetView.swift */,
 				OBJ_25 /* MessageStatView.swift */,
 				OBJ_26 /* OccuranceGraphView.swift */,
@@ -209,12 +216,13 @@
 		OBJ_8 /* CANHack */ = {
 			isa = PBXGroup;
 			children = (
+				730A803B247CAF12009E00A5 /* Car Decoder */,
 				73CFBB09247B578F005743E4 /* Mock.swift */,
 				OBJ_9 /* Byte.swift */,
-				OBJ_10 /* GVRET.swift */,
 				OBJ_11 /* Message.swift */,
 				OBJ_12 /* MessageID.swift */,
 				OBJ_13 /* Parser.swift */,
+				OBJ_10 /* GVRET.swift */,
 				OBJ_14 /* Signal Occurance */,
 			);
 			name = CANHack;
@@ -357,6 +365,7 @@
 				OBJ_46 /* GroupedSignalSet.swift in Sources */,
 				OBJ_47 /* ObservableArray.swift in Sources */,
 				OBJ_48 /* SignalInstance.swift in Sources */,
+				730A803D247CAFA3009E00A5 /* CarDecoder.swift in Sources */,
 				OBJ_49 /* SignalSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,7 +390,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_79 /* BinaryDataView.swift in Sources */,
 				OBJ_81 /* MessageSetView.swift in Sources */,
 				OBJ_82 /* MessageStatView.swift in Sources */,
 				OBJ_83 /* OccuranceGraphView.swift in Sources */,
