@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Combined statisitics for a Signal, maps a signal to all the times it occured
 public class SignalStat<S: Signal>: InstanceList {
@@ -20,6 +21,7 @@ public class SignalStat<S: Signal>: InstanceList {
     
     fileprivate func add(newInstance: SignalInstance<S>) {
         signalList.insert(newInstance)
+        self.objectWillChange.send()
     }
 }
 
@@ -47,15 +49,18 @@ public class SignalSet<S: Signal>: InstanceList {
         _stats = [:]
         for instance in signalInstances {
             let signal = instance.signal
-            if _stats[signal] == nil {
-                _stats[signal] = SignalStat(signal)
-            }
             
-            _stats[signal]!.add(newInstance: instance)
+            _stats[signal, default: SignalStat(signal)].add(newInstance: instance)
+            
         }
         
         signals = SortedArray(sorting: Array(_stats.keys))
     }
+    
+    /// A Publisher that sends every time we create a new Stat
+    /// (ie) every time SignalSet.add is called with an instance that has a new signal
+    /// or every time we insert a new value into `signals`
+    public let newStatPublisher = PassthroughSubject<SignalStat<S>, Never>()
 }
 
 /// SignalStat getters
@@ -68,8 +73,8 @@ extension SignalSet {
     }
     
     /// All the stats in a Collection
-    public var stats: LazyMapCollection<SortedArray<S>, SignalStat<S>> {
-        return signals.lazy.map { self[$0] }
+    public var stats: [SignalStat<S>] {
+        return signals.map { self[$0] }
     }
 }
 
@@ -78,24 +83,16 @@ extension SignalSet {
     /// Add an incoming signal to the list
     public func add(_ newInstance: SignalInstance<S>) {
         signalList.insert(newInstance)
+        self.objectWillChange.send()
         
         let signal = newInstance.signal
         
-        if _stats[signal] == nil {
+        let statsForSignal = _stats[signal, default: SignalStat(signal)]
+        statsForSignal.add(newInstance: newInstance)
+
+        if statsForSignal.signalList.count == 1 {
             // this is a new signal we haven't seen yet
-            _stats[signal] = SignalStat(signal)
-            
             signals.insert(signal)
-        }
-        
-        _stats[signal]!.add(newInstance: newInstance)
-        self.objectWillChange.send()
-    }
-    
-    /// Add an incoming signal to the list
-    public func onNewSignalStat(_ observer: @escaping (SignalStat<S>) -> Void) {
-        signals.onInsert { signal, _ in
-            observer(self._stats[signal]!)
         }
     }
 }

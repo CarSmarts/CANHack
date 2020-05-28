@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Super vague, but a `Signal` is anything that could be associated with "happening" at a certain time
 public protocol Signal: Hashable, CustomStringConvertible, Comparable, Codable, Identifiable { }
@@ -39,6 +40,7 @@ public class SignalList<S: Signal>: SortedArray<SignalInstance<S>> {
 }
 
 /// Anything that has a list of signalInstances...
+/// Any Implementers should make sure objectWillChange is called when signalList is updated
 public protocol InstanceList: ObservableObject {
     associatedtype S: Signal
     
@@ -72,8 +74,8 @@ extension InstanceList {
 
 /// ...and a way to be notified of insertion
 extension InstanceList {
-    public func onInsert(_ observer: @escaping (SignalInstance<S>, Int) -> Void) {
-        signalList.onInsert(observer)
+    public var newInstancePublisher: PassthroughSubject<SignalInstance<S>, Never> {
+        return signalList.insertPublisher
     }
 }
 

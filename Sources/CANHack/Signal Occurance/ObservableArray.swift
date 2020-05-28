@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import Combine
 
 public class AppendArray<Element>: ObservableArrayBase<Element> {
-    private var appendObservers: [(Element) -> Void] = []
+    public let appendPublisher = PassthroughSubject<Element, Never>()
+    
     public func append(_ newElement: Element) {
         array.append(newElement)
-        appendObservers.forEach { $0(newElement) }
-    }
-    public func onAppend(_ observer: @escaping (Element) -> Void) {
-        appendObservers.append(observer)
+        appendPublisher.send(newElement)
     }
 }
 
@@ -29,15 +28,13 @@ public class SortedArray<Element: Equatable>: ObservableArrayBase<Element> {
         self.array.sort(by: predicate)
     }
     
-    private var insertObservers: [(Element, Int) -> Void] = []
+    public let insertPublisher = PassthroughSubject<Element, Never>()
+    
     public func insert(_ newElement: Element) {
         let newIndex = search(for: newElement).index
         
         array.insert(newElement, at: newIndex)
-        insertObservers.forEach { $0(newElement, newIndex) }
-    }
-    public func onInsert(_ observer: @escaping (Element, Int) -> Void) {
-        insertObservers.append(observer)
+        insertPublisher.send(newElement)
     }
 }
 

@@ -7,13 +7,17 @@
 //
 
 import Foundation
+import Combine
 
 public typealias GroupingID = Signal
 
+/// A stat representing all stats in a collection with a matching feature
 public class GroupedStat<S: Signal, G: GroupingID>: InstanceList {
     public let group: G
     public private(set) var stats: AppendArray<SignalStat<S>>
     public private(set) var signalList: SignalList<S>
+    
+    var statSubs: [AnyCancellable] = []
     
     fileprivate init(_ group: G, stats: [SignalStat<S>] = []) {
         self.group = group
@@ -24,9 +28,10 @@ public class GroupedStat<S: Signal, G: GroupingID>: InstanceList {
         })
     
         // Side effect, observe each stat so we can update
-        for stat in stats {
-            stat.signalList.onInsert { instance, _ in
-                self.signalList.insert(instance)
+        statSubs = stats.map { (stat) in
+            stat.newInstancePublisher.sink { (newInstance) in
+                self.signalList.insert(newInstance)
+                self.objectWillChange.send()
             }
         }
     }
@@ -46,6 +51,9 @@ public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList {
         return _signalSet.signalList
     }
     
+    var newStatSub: AnyCancellable?
+    var newInstanceSub: AnyCancellable?
+
     /// Creates a GroupedSignalSet by grouping an existing SignalSet
     public init(grouping original: SignalSet<S>, by groupingFunction: @escaping (SignalStat<S>) -> G) {
         _signalSet = original
@@ -60,10 +68,14 @@ public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList {
         
         groups = SortedArray(sorting: Array(_stats.keys))
         
-        original.onNewSignalStat { newSignalStat in
+        newStatSub = original.newStatPublisher.sink { newSignalStat in
             let newGroup = groupingFunction(newSignalStat)
             self._stats[newGroup] = GroupedStat(newGroup, stats: [newSignalStat])
             self.groups.insert(newGroup)
+        }
+        
+        newInstanceSub = original.objectWillChange.sink {
+            self.objectWillChange.send()
         }
     }
 }
