@@ -32,7 +32,7 @@ public extension Parser {
     
     func parse(from file: URL) -> SignalSet<S> {
         guard let data = try? String(contentsOf: file) else {
-            return SignalSet<S>(signalInstances: [])
+            return SignalSet()
         }
 
         return parse(string: data)

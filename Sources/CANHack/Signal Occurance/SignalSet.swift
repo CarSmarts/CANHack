@@ -41,7 +41,7 @@ public class SignalSet<S: Signal>: InstanceList {
     public private(set) var signalList: SignalList<S>
     
     /// Create a SignalSet from a list of signals
-    public init(signalInstances: [SignalInstance<S>]) {
+    public init(signalInstances: [SignalInstance<S>] = []) {
         signalList = SignalList(signalInstances)
         
         _stats = [:]

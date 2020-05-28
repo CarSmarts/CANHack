@@ -31,6 +31,28 @@ public struct MessageID : Signal, ExpressibleByIntegerLiteral {
 }
 
 public extension MessageID {
+    struct InvalidHexError: Error {
+        
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.singleValueContainer()
+        
+        guard let parsed = Self.from(hex: try values.decode(String.self)) else {
+            throw InvalidHexError()
+        }
+        
+        self = parsed
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(hex)
+    }
+    
+}
+
+public extension MessageID {
     /// A list of the bytes that make up `self`
     var bytes: [Byte] {
         return [

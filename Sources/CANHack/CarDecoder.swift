@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CarDecoder: ObservableObject, Codable {
+public struct CarDecoder: Codable {
     public init(_ messages: [DecoderMessage]) {
         allNodes = Set(messages.map { $0.sendingNode })
         
@@ -17,19 +17,31 @@ public class CarDecoder: ObservableObject, Codable {
     public private(set) var allNodes: Set<DecoderNode>
     public private(set) var messagesById: Dictionary<MessageID, DecoderMessage>
     
+    private mutating func insert(_ newMessage: DecoderMessage, at id: MessageID) {
+        messagesById[id] = newMessage
+        if newMessage.sendingNode != "" {
+            allNodes.insert(newMessage.sendingNode)
+        }
+    }
+    
     /// get a DecoderMessage for an ID, creating an empty one if neccessary
     public subscript(_ id: MessageID) -> DecoderMessage {
-        if let existingMessage = messagesById[id] {
-            return existingMessage
-        } else {
-            return DecoderMessage(id: id, name: "", len: 0, sendingNode: "")
+        get {
+            if let existingMessage = messagesById[id] {
+                return existingMessage
+            } else {
+                return DecoderMessage(id: id, name: "", len: 0, sendingNode: "")
+            }
+        }
+        set(newValue) {
+            insert(newValue, at: id)
         }
     }
 }
 
 public typealias DecoderNode = String
 
-public class DecoderMessage: Codable {
+public struct DecoderMessage: Codable {
     public init(id: MessageID, name: String, len: Int, sendingNode: DecoderNode, signals: [DecoderSignal] = []) {
         self.id = id
         self.name = name
@@ -38,7 +50,7 @@ public class DecoderMessage: Codable {
         self.signals = signals
     }
     
-    public var id: MessageID
+    public let id: MessageID
     public var name: String
     public var len: Int
     
@@ -47,8 +59,8 @@ public class DecoderMessage: Codable {
     public var signals: [DecoderSignal] = []
 }
 
-public class DecoderSignal: Codable {
-    internal init(name: String, location: DecoderSignal.Location, conversion: DecoderSignal.Conversion, unit: String, recivingNode: DecoderNode) {
+public struct DecoderSignal: Codable {
+    public init(name: String, location: DecoderSignal.Location, conversion: DecoderSignal.Conversion, unit: String, recivingNode: DecoderNode) {
         self.name = name
         self.location = location
         self.conversion = conversion

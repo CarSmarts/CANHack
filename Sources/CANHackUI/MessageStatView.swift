@@ -17,53 +17,13 @@ struct Monospaced: ViewModifier {
 }
 
 struct MessageIDView: View {
-    public init(id: MessageID) {
+    public init(id: MessageID, decoder: Binding<DecoderMessage>) {
         self.id = id
+        self._decoder = decoder
     }
     
-    @EnvironmentObject public var model: CanBusModel
-    public let id: MessageID
-    
-    var decoder: DecoderMessage {
-        model.decoder[id]
-    }
-    
-    enum EditingType {
-        case none, name, sender
-    }
-    
-    @State private var edititng: EditingType = .none
-    @State private var nameScratch: String = ""
-    @State private var senderScratch: String = ""
-
-    func endEditing() {
-        if edititng == .name {
-            decoder.name = nameScratch
-            nameScratch = ""
-        } else if edititng == .sender {
-            decoder.sendingNode = senderScratch
-            senderScratch = ""
-        }
-        
-        edititng = .none
-    }
-    
-    func startNameEdit() {
-        if edititng != .none {
-            endEditing()
-        }
-        edititng = .name
-        nameScratch = decoder.name
-    }
-    
-    func startSenderEdit() {
-        if edititng != .none {
-            endEditing()
-        }
-        edititng = .sender
-        senderScratch = decoder.sendingNode
-    }
-
+    public var id: MessageID
+    @Binding var decoder: DecoderMessage
     
     var body: some View {
         HStack {
@@ -71,30 +31,19 @@ struct MessageIDView: View {
                 .font(.headline)
                 .modifier(Monospaced())
             
-            if (edititng == .name) {
-                TextField("name", text: $nameScratch, onCommit: endEditing)
-            } else {
-                Text(decoder.name)
-                .fontWeight(.light)
-                .onTapGesture(perform: startNameEdit)
-            }
-            
-            if (edititng == .sender) {
-                TextField("Sender", text: $senderScratch, onCommit: endEditing)
-            } else {
-                Text("(" + decoder.sendingNode + ")")
-                .fontWeight(.ultraLight)
-                .onTapGesture(perform: startSenderEdit)
-
-            }
+            TextField("name", text: $decoder.name)
+                .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
+            Spacer()
+            TextField("sender", text: $decoder.sendingNode)
+                .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
         }
     }
 }
 
 struct MessageStatView: View {
-    @EnvironmentObject public var model: CanBusModel
     @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
-    
+    @Binding public var decoder: CarDecoder
+
     var shortList: ArraySlice<SignalStat<Message>> {
         groupStats.stats.prefix(10)
     }
@@ -112,7 +61,7 @@ struct MessageStatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: nil) {
 
-            MessageIDView(id: groupStats.group)
+            MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group])
             
             VStack(alignment: .leading, spacing: 2) {
                 ForEach(shortList, id: \.signal) { signalStat in
@@ -154,18 +103,17 @@ struct MessageStatView_Previews: PreviewProvider {
         }
         
         return Group {
-//            Unwrap(goodExample) {
-//                MessageStatView(groupStats: $0)
-//            }
-            
-            Unwrap(testExample) {
-                MessageStatView(groupStats: $0)
+            Unwrap(goodExample) {
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
             }
             
-//            Unwrap(longExample) {
-//                MessageStatView(groupStats: $0)
-//            }
+            Unwrap(testExample) {
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
+            }
+            
+            Unwrap(longExample) {
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
+            }
         }.previewLayout(.fixed(width: 375, height: 170))
-            .environmentObject(Mock.mockModel)
     }
 }

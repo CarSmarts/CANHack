@@ -9,24 +9,32 @@
 import Combine
 import SwiftUI
 import CANHack
+import AppFolder
 
 public struct MessageSetView: View {
-    @ObservedObject public var model: CanBusModel
+    @ObservedObject public var document: MessageSetDocument
+    @Binding public var decoder: CarDecoder
 
-    public init(model: CanBusModel) {
-        self.model = model
+    public init(document: MessageSetDocument, decoder: Binding<CarDecoder>) {
+        self.document = document
+        self._decoder = decoder
     }
     
     public var body: some View {
-        List(model.ids) { id in
-            MessageStatView(groupStats: self.model.groupedById[id])
+        List(document.activeSignalSet.ids) { id in
+            MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder)
         }
-        .environmentObject(model)
     }
 }
 
 struct MessageSetView_Previews: PreviewProvider {
+    static var doc = { () -> MessageSetDocument in
+        let doc = MessageSetDocument(fileURL: AppFolder.tmp.url.appendingPathComponent("test"))
+        doc.activeSignalSet = Mock.mockTestSet
+        return doc
+    }()
+    
     static var previews: some View {
-        MessageSetView(model: Mock.mockModel)
+        MessageSetView(document: doc, decoder: .constant(Mock.mockDecoder))
     }
 }

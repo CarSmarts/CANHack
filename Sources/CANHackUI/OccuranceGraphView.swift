@@ -110,11 +110,11 @@ struct OccuranceGraphView_Previews: PreviewProvider {
         
         return Group {
             Unwrap(goodExample) {
-                MessageStatView(groupStats: $0)
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
             }
             
             Unwrap(otherExample) {
-                MessageStatView(groupStats: $0)
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
             }
         }.previewLayout(.fixed(width: 375, height: 170))
     }

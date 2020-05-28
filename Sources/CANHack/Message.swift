@@ -52,6 +52,19 @@ extension Message: CustomStringConvertible {
     }
 }
 
+extension SignalSet where S == Message {
+    public var ids: SortedArray<MessageID> {
+        groupedById.groups
+    }
+    
+    public var groupedById: GroupedSignalSet<Message, MessageID> {
+        GroupedSignalSet(grouping: self, by: { (stat) -> MessageID in
+            stat.signal.id
+        })
+    }
+
+}
+
 /// Array Sorting
 extension Sequence where Element: Comparable {
     static func <(lhs: Self, rhs: Self) -> Bool {

@@ -189,8 +189,4 @@ public struct Mock {
         
         return decoder
     }
-    
-    public static var mockModel: CanBusModel {
-        return CanBusModel(signalSet: mockTestSet, decoder: mockDecoder)
-    }
 }
