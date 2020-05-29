@@ -145,3 +145,9 @@ extension ObservableArrayBase: RandomAccessCollection {
 
 }
 
+extension ObservableArrayBase: CustomStringConvertible {
+    public var description: String {
+        return array.description
+    }
+}
+

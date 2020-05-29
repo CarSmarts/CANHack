@@ -12,7 +12,7 @@ import Combine
 public typealias GroupingID = Signal
 
 /// A stat representing all stats in a collection with a matching feature
-public class GroupedStat<S: Signal, G: GroupingID>: InstanceList {
+public class GroupedStat<S: Signal, G: GroupingID>: InstanceList, ObservableObject {
     public let group: G
     public private(set) var stats: AppendArray<SignalStat<S>>
     public private(set) var signalList: SignalList<S>
@@ -31,14 +31,13 @@ public class GroupedStat<S: Signal, G: GroupingID>: InstanceList {
         statSubs = stats.map { (stat) in
             stat.newInstancePublisher.sink { (newInstance) in
                 self.signalList.insert(newInstance)
-                self.objectWillChange.send()
             }
         }
     }
 }
 
 /// A set of messages, collected for the purpose of analysis, grouped by a specifc identify
-public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList {
+public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList, ObservableObject {
     private var _signalSet: SignalSet<S>
     private var _stats: [G: GroupedStat<S, G>]
     private var _groupingFunction: (SignalStat<S>) -> G
@@ -72,10 +71,6 @@ public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList {
             let newGroup = groupingFunction(newSignalStat)
             self._stats[newGroup] = GroupedStat(newGroup, stats: [newSignalStat])
             self.groups.insert(newGroup)
-        }
-        
-        newInstanceSub = original.objectWillChange.sink {
-            self.objectWillChange.send()
         }
     }
 }

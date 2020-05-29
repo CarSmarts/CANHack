@@ -21,7 +21,6 @@ public class SignalStat<S: Signal>: InstanceList {
     
     fileprivate func add(newInstance: SignalInstance<S>) {
         signalList.insert(newInstance)
-        self.objectWillChange.send()
     }
 }
 
@@ -49,9 +48,11 @@ public class SignalSet<S: Signal>: InstanceList {
         _stats = [:]
         for instance in signalInstances {
             let signal = instance.signal
+            if _stats[signal] == nil {
+                _stats[signal] = SignalStat(signal)
+            }
             
-            _stats[signal, default: SignalStat(signal)].add(newInstance: instance)
-            
+            _stats[signal]!.add(newInstance: instance)
         }
         
         signals = SortedArray(sorting: Array(_stats.keys))
@@ -83,23 +84,25 @@ extension SignalSet {
     /// Add an incoming signal to the list
     public func add(_ newInstance: SignalInstance<S>) {
         signalList.insert(newInstance)
-        self.objectWillChange.send()
         
         let signal = newInstance.signal
         
-        let statsForSignal = _stats[signal, default: SignalStat(signal)]
-        statsForSignal.add(newInstance: newInstance)
-
-        if statsForSignal.signalList.count == 1 {
+        if _stats[signal] == nil {
             // this is a new signal we haven't seen yet
+            _stats[signal] = SignalStat(signal)
+            
             signals.insert(signal)
         }
+        
+        _stats[signal]!.add(newInstance: newInstance)
     }
 }
 
-// FIXME:
-//extension SignalSet: CustomStringConvertible {
-//    public var description: String {
-//        return stats.map { $0.description }.joined(separator: "\n")
-//    }
-//}
+extension SignalSet: CustomStringConvertible {
+    public var description: String {
+        var description = stats.map { $0.description }.prefix(through: 10).joined(separator: "\n")
+        if stats.count > 10 { description += "+ \(stats.count - 10) more\n" }
+        
+        return description
+    }
+}

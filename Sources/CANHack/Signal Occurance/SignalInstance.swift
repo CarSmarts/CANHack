@@ -40,8 +40,7 @@ public class SignalList<S: Signal>: SortedArray<SignalInstance<S>> {
 }
 
 /// Anything that has a list of signalInstances...
-/// Any Implementers should make sure objectWillChange is called when signalList is updated
-public protocol InstanceList: ObservableObject {
+public protocol InstanceList {
     associatedtype S: Signal
     
     var signalList: SignalList<S> { get }
