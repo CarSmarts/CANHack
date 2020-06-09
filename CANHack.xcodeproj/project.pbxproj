@@ -22,14 +22,15 @@
 
 /* Begin PBXBuildFile section */
 		730A803D247CAFA3009E00A5 /* CarDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A803C247CAFA3009E00A5 /* CarDecoder.swift */; };
-		730A8045247DCF71009E00A5 /* CarDecoderDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8044247DCF71009E00A5 /* CarDecoderDocument.swift */; };
 		730A804B247DE364009E00A5 /* CANHackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8049247DE33A009E00A5 /* CANHackManager.swift */; };
 		730A8050247DE3AA009E00A5 /* AppFolder in Frameworks */ = {isa = PBXBuildFile; productRef = 730A804F247DE3AA009E00A5 /* AppFolder */; };
 		730A8052247DE82F009E00A5 /* CanHackUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8051247DE82F009E00A5 /* CanHackUIView.swift */; };
 		730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8054247DF33C009E00A5 /* MessageSetDocument.swift */; };
+		7358E402249018F000013620 /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7358E401249018F000013620 /* SmartCarUI */; };
+		7358E4032490190F00013620 /* CarDecoderDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8044247DCF71009E00A5 /* CarDecoderDocument.swift */; };
+		7358E4062490520200013620 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7358E4042490508600013620 /* MessageDetailView.swift */; };
 		738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738454902480B9AD00D1C94E /* BinaryDataView.swift */; };
-		73CFBB0A247B578F005743E4 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
-		73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 73D23E5B247B813E00C307AA /* SmartCarUI */; };
+		73904659249012D10068F78A /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
 		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
 		OBJ_42 /* GVRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* GVRET.swift */; };
 		OBJ_43 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Message.swift */; };
@@ -86,6 +87,7 @@
 		730A8049247DE33A009E00A5 /* CANHackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CANHackManager.swift; sourceTree = "<group>"; };
 		730A8051247DE82F009E00A5 /* CanHackUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanHackUIView.swift; sourceTree = "<group>"; };
 		730A8054247DF33C009E00A5 /* MessageSetDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetDocument.swift; sourceTree = "<group>"; };
+		7358E4042490508600013620 /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
 		738454902480B9AD00D1C94E /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDataView.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,7 +134,7 @@
 			files = (
 				730A8050247DE3AA009E00A5 /* AppFolder in Frameworks */,
 				OBJ_85 /* CANHack.framework in Frameworks */,
-				73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */,
+				7358E402249018F000013620 /* SmartCarUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +144,7 @@
 		730A8053247DE83E009E00A5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				73CFBB09247B578F005743E4 /* Mock.swift */,
 				730A8044247DCF71009E00A5 /* CarDecoderDocument.swift */,
 				730A8054247DF33C009E00A5 /* MessageSetDocument.swift */,
 				730A8049247DE33A009E00A5 /* CANHackManager.swift */,
@@ -173,6 +176,7 @@
 				730A8051247DE82F009E00A5 /* CanHackUIView.swift */,
 				OBJ_24 /* MessageSetView.swift */,
 				OBJ_25 /* MessageStatView.swift */,
+				7358E4042490508600013620 /* MessageDetailView.swift */,
 				OBJ_26 /* OccuranceGraphView.swift */,
 				738454902480B9AD00D1C94E /* BinaryDataView.swift */,
 				730A8053247DE83E009E00A5 /* Model */,
@@ -233,7 +237,6 @@
 		OBJ_8 /* CANHack */ = {
 			isa = PBXGroup;
 			children = (
-				73CFBB09247B578F005743E4 /* Mock.swift */,
 				730A803C247CAFA3009E00A5 /* CarDecoder.swift */,
 				OBJ_9 /* Byte.swift */,
 				OBJ_11 /* Message.swift */,
@@ -299,8 +302,8 @@
 			);
 			name = CANHackUI;
 			packageProductDependencies = (
-				73D23E5B247B813E00C307AA /* SmartCarUI */,
 				730A804F247DE3AA009E00A5 /* AppFolder */,
+				7358E401249018F000013620 /* SmartCarUI */,
 			);
 			productName = CANHackUI;
 			productReference = "CANHack::CANHackUI::Product" /* CANHackUI.framework */;
@@ -354,8 +357,8 @@
 			);
 			mainGroup = OBJ_5;
 			packageReferences = (
-				73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */,
 				730A804C247DE398009E00A5 /* XCRemoteSwiftPackageReference "AppFolder" */,
+				7358E400249018F000013620 /* XCRemoteSwiftPackageReference "SmartCarUI" */,
 			);
 			productRefGroup = OBJ_31 /* Products */;
 			projectDirPath = "";
@@ -376,10 +379,8 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_41 /* Byte.swift in Sources */,
-				73CFBB0A247B578F005743E4 /* Mock.swift in Sources */,
 				OBJ_42 /* GVRET.swift in Sources */,
 				OBJ_43 /* Message.swift in Sources */,
-				730A8045247DCF71009E00A5 /* CarDecoderDocument.swift in Sources */,
 				OBJ_44 /* MessageID.swift in Sources */,
 				OBJ_45 /* Parser.swift in Sources */,
 				OBJ_46 /* GroupedSignalSet.swift in Sources */,
@@ -410,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				7358E4032490190F00013620 /* CarDecoderDocument.swift in Sources */,
 				738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */,
 				OBJ_81 /* MessageSetView.swift in Sources */,
 				OBJ_82 /* MessageStatView.swift in Sources */,
@@ -417,6 +419,8 @@
 				730A804B247DE364009E00A5 /* CANHackManager.swift in Sources */,
 				730A8052247DE82F009E00A5 /* CanHackUIView.swift in Sources */,
 				730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */,
+				73904659249012D10068F78A /* Mock.swift in Sources */,
+				7358E4062490520200013620 /* MessageDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,7 +820,7 @@
 				kind = branch;
 			};
 		};
-		73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */ = {
+		7358E400249018F000013620 /* XCRemoteSwiftPackageReference "SmartCarUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:CarSmarts/SmartCarUI.git";
 			requirement = {
@@ -832,9 +836,9 @@
 			package = 730A804C247DE398009E00A5 /* XCRemoteSwiftPackageReference "AppFolder" */;
 			productName = AppFolder;
 		};
-		73D23E5B247B813E00C307AA /* SmartCarUI */ = {
+		7358E401249018F000013620 /* SmartCarUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 73D23E5A247B813E00C307AA /* XCRemoteSwiftPackageReference "SmartCarUI" */;
+			package = 7358E400249018F000013620 /* XCRemoteSwiftPackageReference "SmartCarUI" */;
 			productName = SmartCarUI;
 		};
 /* End XCSwiftPackageProductDependency section */

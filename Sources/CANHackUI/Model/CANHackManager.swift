@@ -9,12 +9,9 @@
 import SwiftUI
 import Combine
 import CANHack
-import SmartCarUI
 import AppFolder
 
 public class CANHackManager: ObservableObject {
-    public private(set) var picker: PickerObject
-        
     public var decoderBinding: Binding<CarDecoder> {
         return Binding(get: {
             self.decoderDocument.decoder
@@ -40,16 +37,14 @@ public class CANHackManager: ObservableObject {
         return MessageSetDocument(fileURL: AppFolder.Documents.url.appendingPathComponent("scratch.csv"))
     }()
 
-    private func openMessageSet(at url: URL) {
+    public func openMessageSet(at url: URL) {
         messageSetDocument = MessageSetDocument(fileURL: url)
         messageSetDocument!.open(completionHandler: { _ in
             self.objectWillChange.send()
         })
     }
         
-    public init(rootVC: UIViewController) {
-        self.picker = PickerObject(rootVC: rootVC)
-        
+    public init() {
         let url = AppFolder.Documents.url.appendingPathComponent("mainDecoder.json")
         decoderDocument = CarDecoderDocument(fileURL: url)
         
@@ -59,14 +54,6 @@ public class CANHackManager: ObservableObject {
             decoderDocument.open(completionHandler: { _ in
                 self.objectWillChange.send()
             })
-        }
-        
-        picker.didPickDocument = { url in
-//            if let document = self.messageSetDocument, document.documentState != .closed {
-//                document.close(completionHandler: { _ in self.openMessageSet(at: url) })
-//            } else {
-                self.openMessageSet(at: url)
-//            }
         }
     }
 }

@@ -13,7 +13,8 @@ import SmartCarUI
 
 public struct CanHackUIView: View {
     @EnvironmentObject private var manager: CANHackManager
-    
+    @EnvironmentObject private var picker: PickerObject
+
     public init() { }
     
     public var body: some View {
@@ -26,7 +27,7 @@ public struct CanHackUIView: View {
             .navigationBarTitle(manager.messageSetDocument?.localizedName ?? "CANHack")
             .navigationBarItems(trailing: Button(
                 action: {
-                    self.manager.picker.isPresented = true
+                    self.picker.isPresented = true
                 },
                 label: { Text("Choose File") }
             ))

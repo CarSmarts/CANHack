@@ -11,31 +11,47 @@ import CANHack
 import SmartCarUI
 
 struct Monospaced: ViewModifier {
+    var style: Font.TextStyle = .body
+    
     func body(content: Content) -> some View {
         content.font(.system(.body, design: .monospaced))
     }
 }
 
 struct MessageIDView: View {
-    public init(id: MessageID, decoder: Binding<DecoderMessage>) {
+    public init(id: MessageID, decoder: Binding<DecoderMessage>, expanded: Binding<Bool>) {
         self.id = id
         self._decoder = decoder
+        self._expanded = expanded
     }
     
     public var id: MessageID
     @Binding var decoder: DecoderMessage
+    @Binding var expanded: Bool
     
     var body: some View {
         HStack {
             Text(id.description)
-                .font(.headline)
-                .modifier(Monospaced())
+                .modifier(Monospaced(style: .headline))
+                .layoutPriority(10.0)
             
             TextField("name", text: $decoder.name)
                 .font(.subheadline)
-            Spacer()
+            
             TextField("sender", text: $decoder.sendingNode)
-                .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
+                .font(.subheadline)
+            
+            Button(action: {
+                self.expanded.toggle()
+            }) {
+            if expanded {
+                Image(systemName: "chevron.up")
+            } else {
+                Image(systemName: "chevron.down")
+                }
+            }
+//            .padding(5.0)
+            .buttonStyle(BorderlessButtonStyle())
         }
     }
 }
@@ -62,25 +78,10 @@ struct MessageStatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: nil) {
 
-            HStack {
-                MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group])
+            MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group], expanded: $expanded)
                 
-                    Button(action: {
-                        self.expanded.toggle()
-                    }) {
-                    if expanded {
-                        Image(systemName: "chevron.up")
-                    } else {
-                        Image(systemName: "chevron.down")
-                        }
-                    }
-            }
+            NavigationLink(destination: MessageDetailView(stats: groupStats, decoder: $decoder[groupStats.group]), label: { EmptyView() })
             
-            if expanded {
-                Unwrap(groupStats.lastInstance?.signal) { message in
-                    BinaryDataView(message: message, decoder: self.$decoder[message.id])
-                }
-            } else {
                 VStack(alignment: .leading, spacing: 2) {
                     ForEach(shortList, id: \.signal) { signalStat in
                         ZStack(alignment: .leading) {
@@ -90,7 +91,6 @@ struct MessageStatView: View {
                             .modifier(Monospaced())
                                 .padding(.leading)
                         }
-                    }
                 }
                 
                 Group {
@@ -107,32 +107,34 @@ struct MessageStatView: View {
 
 struct MessageStatView_Previews: PreviewProvider {
     static var previews: some View {
-        let groupedSet = Mock.mockGroupedSet
+//        let groupedSet = Mock.mockGroupedSet
         
-        let goodExample = groupedSet.stats.first { stat in
-            stat.stats.count > 1
-        }
+//        let goodExample = groupedSet.stats.first { stat in
+//            stat.stats.count > 1
+//        }
+//
+//        let testExample = groupedSet.stats.first { stat in
+//            stat.group == MessageID(rawValue: 0xAF81111)!
+//        }
+//
+//        let longExample = groupedSet.stats.first { stat in
+//            stat.group == MessageID(rawValue: 0x12F85351)
+//        }
         
-        let testExample = groupedSet.stats.first { stat in
-            stat.group == MessageID(rawValue: 0xAF81111)!
-        }
-
-        let longExample = groupedSet.stats.first { stat in
-            stat.group == MessageID(rawValue: 0x12F85351)
-        }
+//        return Group {
+//            Unwrap(goodExample) {
+//                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
+//            }
+//
+//            Unwrap(testExample) {
+//                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
+//            }
+//
+//            Unwrap(longExample) {
+//                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
+//            }
+//        }.previewLayout(.fixed(width: 375, height: 170))
         
-        return Group {
-            Unwrap(goodExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
-            }
-            
-            Unwrap(testExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
-            }
-            
-            Unwrap(longExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder))
-            }
-        }.previewLayout(.fixed(width: 375, height: 170))
+        return MessageSetView(document: MockMessageSetDocument(), decoder: .constant(Mock.mockDecoder))
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import CANHack
 
 public class CarDecoderDocument: UIDocument, ObservableObject {
     private var jsonDecoder = JSONDecoder()

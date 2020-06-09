@@ -6,7 +6,9 @@
 //  Copyright © 2017 Robert Smith. All rights reserved.
 //
 
-import UIKit
+import CANHack
+import SwiftUI
+import AppFolder
 
 public struct Mock {
     
@@ -172,7 +174,7 @@ public struct Mock {
     18687,0x12F83210,true,Rx,1,1,00
     18730,0x12F83010,true,Rx,1,1,80
     """
-}
+    }
     
     public static var mockTestSet: SignalSet<Message> {
         GVRetParser().parse(string: testFile)
@@ -190,5 +192,49 @@ public struct Mock {
         ])
         
         return decoder
+    }
+    
+    @State public static var mockDecoderMessage = DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
+
+    
+    public static var globalManager = { () -> CANHackManager in
+        let manager = CANHackManager()
+        
+        
+        
+        return manager
+    }()
+}
+
+public class MockMessageSetDocument: MessageSetDocument {
+    public init() {
+        super.init(fileURL: AppFolder.tmp.baseURL.appendingPathComponent("testSet"))
+    
+        activeSignalSet = Mock.mockTestSet
+    }
+    
+    public override func contents(forType typeName: String) throws -> Any {
+        return Data()
+    }
+    
+    public override func load(fromContents contents: Any, ofType typeName: String?) throws {
+        
+
+    }
+}
+
+public class MockDecoderDocument: CarDecoderDocument {
+    public init() {
+        super.init(fileURL: AppFolder.tmp.baseURL.appendingPathComponent("testDecoder"))
+        
+        decoder = Mock.mockDecoder
+    }
+    
+    public override func contents(forType typeName: String) throws -> Any {
+        return Data()
+    }
+    
+    public override func load(fromContents contents: Any, ofType typeName: String?) throws {
+
     }
 }
