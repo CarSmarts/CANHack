@@ -32,7 +32,7 @@ struct MessageIDView: View {
                 .modifier(Monospaced())
             
             TextField("name", text: $decoder.name)
-                .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
+                .font(.subheadline)
             Spacer()
             TextField("sender", text: $decoder.sendingNode)
                 .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
@@ -43,6 +43,7 @@ struct MessageIDView: View {
 struct MessageStatView: View {
     @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
     @Binding public var decoder: CarDecoder
+    @State private var expanded: Bool = false
 
     var shortList: ArraySlice<SignalStat<Message>> {
         groupStats.stats.prefix(10)
@@ -61,25 +62,43 @@ struct MessageStatView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: nil) {
 
-            MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group])
-            
-            VStack(alignment: .leading, spacing: 2) {
-                ForEach(shortList, id: \.signal) { signalStat in
-                    ZStack(alignment: .leading) {
-                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.groupStats.scale, colorChoice: AnyHashable(signalStat.signal))
-
-                        Text(signalStat.signal.contentDescription)
-                        .modifier(Monospaced())
-                            .padding(.leading)
+            HStack {
+                MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group])
+                
+                    Button(action: {
+                        self.expanded.toggle()
+                    }) {
+                    if expanded {
+                        Image(systemName: "chevron.up")
+                    } else {
+                        Image(systemName: "chevron.down")
+                        }
                     }
-                }
             }
             
-            Group {
-                if self.remander > 0 {
-                    Text("+ \(self.remander) more")
-                        .font(.footnote)
-                        .fontWeight(.light)
+            if expanded {
+                Unwrap(groupStats.lastInstance?.signal) { message in
+                    BinaryDataView(message: message, decoder: self.$decoder[message.id])
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(shortList, id: \.signal) { signalStat in
+                        ZStack(alignment: .leading) {
+                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.groupStats.scale, colorChoice: AnyHashable(signalStat.signal))
+
+                            Text(signalStat.signal.contentDescription)
+                            .modifier(Monospaced())
+                                .padding(.leading)
+                        }
+                    }
+                }
+                
+                Group {
+                    if self.remander > 0 {
+                        Text("+ \(self.remander) more")
+                            .font(.footnote)
+                            .fontWeight(.light)
+                    }
                 }
             }
         }

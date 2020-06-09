@@ -21,6 +21,19 @@ internal extension String {
 public typealias Byte = UInt8
 
 public extension Byte {
+    var bits: [Bool] {
+        return Array(0..<8).map { self[$0] }
+    }
+    
+    subscript(_ index: Int) -> Bool {
+        precondition(index >= 0)
+        precondition(index < 8)
+        
+        return (self & 0b1 << index) != 0
+    }
+}
+
+public extension Byte {
     /// A human readable binary representation of a Byte
     var bin: String {
         let padding = String(repeating: "0", count: Swift.min(leadingZeroBitCount, 7))

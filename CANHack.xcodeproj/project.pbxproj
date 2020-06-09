@@ -27,6 +27,7 @@
 		730A8050247DE3AA009E00A5 /* AppFolder in Frameworks */ = {isa = PBXBuildFile; productRef = 730A804F247DE3AA009E00A5 /* AppFolder */; };
 		730A8052247DE82F009E00A5 /* CanHackUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8051247DE82F009E00A5 /* CanHackUIView.swift */; };
 		730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8054247DF33C009E00A5 /* MessageSetDocument.swift */; };
+		738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738454902480B9AD00D1C94E /* BinaryDataView.swift */; };
 		73CFBB0A247B578F005743E4 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
 		73D23E5C247B813E00C307AA /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 73D23E5B247B813E00C307AA /* SmartCarUI */; };
 		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
@@ -85,6 +86,7 @@
 		730A8049247DE33A009E00A5 /* CANHackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CANHackManager.swift; sourceTree = "<group>"; };
 		730A8051247DE82F009E00A5 /* CanHackUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanHackUIView.swift; sourceTree = "<group>"; };
 		730A8054247DF33C009E00A5 /* MessageSetDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetDocument.swift; sourceTree = "<group>"; };
+		738454902480B9AD00D1C94E /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDataView.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CANHack::CANHackTests::Product" /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +174,7 @@
 				OBJ_24 /* MessageSetView.swift */,
 				OBJ_25 /* MessageStatView.swift */,
 				OBJ_26 /* OccuranceGraphView.swift */,
+				738454902480B9AD00D1C94E /* BinaryDataView.swift */,
 				730A8053247DE83E009E00A5 /* Model */,
 			);
 			name = CANHackUI;
@@ -407,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */,
 				OBJ_81 /* MessageSetView.swift in Sources */,
 				OBJ_82 /* MessageStatView.swift in Sources */,
 				OBJ_83 /* OccuranceGraphView.swift in Sources */,
@@ -577,7 +581,9 @@
 				LD = /usr/bin/true;
 				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.2.0";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -590,7 +596,9 @@
 				LD = /usr/bin/true;
 				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.2.0";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

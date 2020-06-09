@@ -19,8 +19,19 @@ class CANHackTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
+    func testByteSubscript() {
+        XCTAssertTrue(Byte(0b0000_0010)[1])
+        XCTAssertTrue(Byte(0b0000_0001)[0])
+        XCTAssertTrue(Byte(0b1000_0001)[7])
+        
+        XCTAssertFalse(Byte(0b0000_0010)[3])
+        XCTAssertFalse(Byte(0b0000_0001)[1])
+        XCTAssertFalse(Byte(0b1000_0001)[3])
+
+    }
+    
     func testEncoding() throws {
-        let myDecoder = CarDecoder([])
+        var myDecoder = CarDecoder([])
         myDecoder[0xAF81111].name = "myName"
         myDecoder[0xAF81111].sendingNode = "Sender1"
         myDecoder[0xAF81010].name = "otherName"

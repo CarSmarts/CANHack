@@ -59,7 +59,7 @@ public struct DecoderMessage: Codable {
     public var signals: [DecoderSignal] = []
 }
 
-public struct DecoderSignal: Codable {
+public struct DecoderSignal: Codable, Equatable {
     public init(name: String, location: DecoderSignal.Location, conversion: DecoderSignal.Conversion, unit: String, recivingNode: DecoderNode) {
         self.name = name
         self.location = location
@@ -70,7 +70,14 @@ public struct DecoderSignal: Codable {
     
     public var name: String
     
-    public struct Location: Codable {
+    public struct Location: Codable, Equatable {
+        public init(startBit: Int, len: Int, littleEndian: Bool = false, signed: Bool = false) {
+            self.startBit = startBit
+            self.len = len
+            self.littleEndian = littleEndian
+            self.signed = signed
+        }
+        
         public var startBit: Int
         public var len: Int
         public var littleEndian: Bool
@@ -78,7 +85,14 @@ public struct DecoderSignal: Codable {
     }
     public var location: Location
     
-    public struct Conversion: Codable {
+    public struct Conversion: Codable, Equatable {
+        public init(factor: Double = 1.0, offset: Int = 0, min: Int = 0, max: Int = 0xFFFFFFFF) {
+            self.factor = factor
+            self.offset = offset
+            self.min = min
+            self.max = max
+        }
+        
         public var factor: Double
         public var offset: Int
         public var min: Int
