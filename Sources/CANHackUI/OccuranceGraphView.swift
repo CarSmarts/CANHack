@@ -18,6 +18,18 @@ extension InstanceList {
     }
 }
 
+extension CGFloat {
+    func clamped(to min: CGFloat, max: CGFloat) -> CGFloat {
+        if self < min {
+            return min
+        } else if self > max {
+            return max
+        } else {
+            return self
+        }
+    }
+}
+
 extension SortedArray {
     private func _find(closest element: Element, lowerIndex: Int, upperIndex: Int) -> Int {
         guard (lowerIndex <= upperIndex) else {
@@ -106,20 +118,9 @@ struct OccuranceGraphRow: View {
 }
 
 struct ScrubView: View {
-    var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color.red
-                    .opacity(0.80)
-                    .frame(width: 2.0, height: geo.size.height, alignment: .center)
-            }
-        }
-    }
-}
-
-struct OccuranceGraph: View {
-    @ObservedObject var data: GroupedStat<Message, MessageID>
-    public var scale: OccuranceGraphScale
+    
+    var data: SignalList<Message>
+    var scale: OccuranceGraphScale
     
     @Binding public var activeSignal: SignalInstance<Message>
     
@@ -128,33 +129,63 @@ struct OccuranceGraph: View {
             if activeIndex < 0 {
                 activeIndex = 0
             }
-            if activeIndex > data.signalList.count {
-                activeIndex = data.signalList.count - 1
+            if activeIndex >= data.count {
+                activeIndex = data.count - 1
             }
-            activeSignal = data.signalList[activeIndex]
+            activeSignal = data[activeIndex]
         }
     }
-    @State private var lastActiveIndex: Int = 0
-
+    
     func hitTest(xpos: CGFloat, width: CGFloat) {
-        let last = data.lastTimestamp
-        let first = data.firstTimestamp
-        
-        guard last != 0, first != 0, first != last else {
-            return
+        guard let last = data.last?.timestamp,
+            let first = data.first?.timestamp, first != last else {
+                return
         }
         
         let range = last - first
-        let target = Int((width - xpos) * CGFloat(range)) + first
+        let target = Int((xpos / width) * CGFloat(range)) + first
         
-        var fakeMessage = data.lastInstance!
+        var fakeMessage = data.last!
         fakeMessage.timestamp = target
         
-        let closestIdx = data.signalList.find(closest: fakeMessage)
-        activeSignal = data.signalList[closestIdx]
-        
-        print("Scrub to:", closestIdx)
+        activeIndex = data.find(closest: fakeMessage)
     }
+    
+    private func computeScrubOffset(width: CGFloat) -> CGFloat {
+        let range = scale.max - scale.min
+        let target = activeSignal.timestamp
+        let percent = CGFloat(target - scale.min) / CGFloat(range)
+        
+        return (width * percent).clamped(to: 0.0, max: width)
+    }
+    
+    @State var offset: CGFloat = 0.0
+
+    var body: some View {
+        GeometryReader { geo in
+            Color.clear.contentShape(Rectangle())
+                .gesture(
+                    DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
+                    .onChanged({ value in
+                        self.hitTest(xpos: value.location.x, width: geo.size.width)
+                        
+                        self.offset = self.computeScrubOffset(width: geo.size.width)
+                    })
+                )
+            .overlay(
+                Color.red
+                .opacity(0.80)
+                    .frame(width: 2.0, height: geo.size.height)
+                    .offset(x: self.offset, y: 0.0),
+                alignment: Alignment(horizontal: .leading, vertical: .center)
+            )
+        }
+    }
+}
+
+struct OccuranceGraph: View {
+    @ObservedObject var data: GroupedStat<Message, MessageID>
+    public var scale: OccuranceGraphScale
     
     var shortList: ArraySlice<SignalStat<Message>> {
         data.stats.prefix(10)
@@ -171,22 +202,12 @@ struct OccuranceGraph: View {
                     Text(signalStat.signal.contentDescription)
                     .modifier(Monospaced())
                     .padding(.leading)
-                    .frame(maxWidth: .infinity, minHeight: 13.0, maxHeight: 30.0, alignment: .leading)
-                    .background(                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.data.scale, colorChoice: AnyHashable(signalStat.signal))
+                    .frame(maxWidth: .infinity, minHeight: 15.0, maxHeight: 30.0, alignment: .leading)
+                    .background(
+                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.data.scale, colorChoice: AnyHashable(signalStat.signal))
                     )
                 }
             }
-            .gesture(
-                DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
-                .onChanged({ value in
-                    let offset = Int(value.translation.width / 10.0)
-                    self.activeIndex = self.lastActiveIndex + offset
-                })
-                .onEnded({ _ in
-                    self.lastActiveIndex = self.activeIndex
-                })
-            )
-            .overlay(ScrubView(), alignment: .center)
 
             Group {
                 if self.remander > 0 {
@@ -198,14 +219,6 @@ struct OccuranceGraph: View {
         }
     }
 }
-
-//extension GroupedSignalSet {
-//    public var scale: OccuranceGraphScale {
-//        var scale = _signalSet.scale
-//        scale.count = groups.count
-//        return scale
-//    }
-//}
 
 struct OccuranceGraphView_Previews: PreviewProvider {
     static var previews: some View {
@@ -219,11 +232,11 @@ struct OccuranceGraphView_Previews: PreviewProvider {
         
         return Group {
             Unwrap(goodExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]), activeSignal: .constant(Mock.mockSignalInstance))
             }
             
             Unwrap(otherExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]), activeSignal: .constant(Mock.mockSignalInstance))
             }
         }.previewLayout(.fixed(width: 375, height: 170))
     }

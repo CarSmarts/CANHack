@@ -23,9 +23,9 @@ public struct MessageSetView: View {
     public var body: some View {
         List(document.activeSignalSet.ids) { id in
             ZStack {
-            MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id])
+                MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.mockSignalInstance))
                 
-            NavigationLink(destination: MessageDetailView(stats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id]), label: { EmptyView() })
+                NavigationLink(destination: MessageDetailView(stats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id]), label: { EmptyView() })
 
             }
         }

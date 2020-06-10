@@ -186,6 +186,10 @@ public struct Mock {
         }
     }
     
+    public static var mockSignalInstance: SignalInstance<Message> {
+        return SignalInstance(signal: Message(id: 0xAF81111, contents: []), timestamp: 0)
+    }
+    
     public static var mockDecoder: CarDecoder {
         let decoder = CarDecoder([
             DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")

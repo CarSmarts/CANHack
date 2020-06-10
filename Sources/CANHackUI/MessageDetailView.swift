@@ -8,17 +8,27 @@
 import SwiftUI
 import CANHack
 
+struct DecoderSignalView: View {
+    @Binding var decoderSignal: DecoderSignal
+    let index: Int
+    
+    var body: some View {
+        return Text("Decoder Signal")
+    }
+}
+
 struct MessageDetailView: View {
     public init(stats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
         self.stats = stats
         self._decoder = decoder
-        
+                
         self.selection = Selection(numRows: 1, numColumns: 8)
         self.selection.signals = self.decoder.signals
-        self.selection.numRows = self.message.contents.count
         
-        // start at last position?
-        self.scrubPosition = self.stats.signalList.count - 1
+        if let first = stats.firstInstance {
+            self.activeSignal = first
+            self.selection.numRows = first.signal.contents.count
+        }
     }
 
     @ObservedObject public var stats: GroupedStat<Message, MessageID>
@@ -30,17 +40,7 @@ struct MessageDetailView: View {
     }
         
     @ObservedObject private var selection: Selection
-    
-    @State var scrubPosition: Int = 0
-    
-    var message: Message {
-        guard scrubPosition < stats.signalList.count else {
-            print("signalAccess out of range")
-            return Message(id: 0xAF81111, contents: Array(repeating: 0x00, count: selection.numRows))
-        }
-        
-        return stats.signalList[scrubPosition].signal
-    }
+    @State var activeSignal: SignalInstance<Message> = Mock.mockSignalInstance
     
     fileprivate func eraseSignal() {
         selection.isActive = false
@@ -62,11 +62,16 @@ struct MessageDetailView: View {
     }
     
     public var body: some View {
-        VStack() {
-            MessageStatView(groupStats: stats, decoder: self.$decoder)
+        let stats = self.stats
+        
+        return VStack {
+            MessageIDView(id: stats.group, decoder: $decoder)
+                
+            OccuranceGraph(data: stats, scale: stats.scale)
+                .overlay(ScrubView(data: stats.signalList, scale: stats.scale, activeSignal: $activeSignal))
 
             HStack {
-                BinaryDataCellsView(message: self.message, decoder: self.$decoder, selection: self.selection)
+                BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)
                 
                 VStack(alignment: .center) {
                     if selection.activeDecoderSignal == nil {

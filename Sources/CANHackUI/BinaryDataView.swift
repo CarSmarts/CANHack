@@ -160,7 +160,8 @@ public struct BinaryDataRow: View {
         HStack {
             HStack(alignment: .lastTextBaseline, spacing: -0.5) {
                 ForEach(self.reversedBits, id: \.0) { row in
-                    return DigitCell(digit: row.1, selection: self.selection, index: Index(self.rowIndex, row.0))
+                    DigitCell(digit: row.1, selection: self.selection, index: Index(self.rowIndex, row.0))
+                        .padding(.leading, (row.0 % 4 == 3) ? 5.0: 0.0)
                 }
             }
         }
@@ -188,13 +189,14 @@ public struct BinaryDataCellsView: View {
             GeometryReader { geo in
                 VStack(alignment: .leading, spacing: -0.5) {
                     ForEach(Array(self.message.contents.enumerated()), id: \.0) { row in
-                        HStack {
+                        HStack(alignment: .lastTextBaseline) {
                             BinaryDataRow(byte: row.element, rowIndex: row.offset, selection: self.selection)
                             
                             Text(row.element.hex)
                             .fontWeight(.light)
                             .modifier(Monospaced())
                         }
+                        .padding(.bottom, 5.0)
 
                     }
                 }
@@ -204,7 +206,7 @@ public struct BinaryDataCellsView: View {
                     self.selection.startIndex = self.hitTest(geoProxy: geo, location: value.startLocation)
                     self.selection.endIndex = self.hitTest(geoProxy: geo, location: value.location)
                 }))
-            }.frame(width: 30 * 8, height: 30.0 * CGFloat(self.message.contents.count), alignment: .topLeading)
+            }.frame(width: 30 * 8 + 5.0, height: 35.0 * CGFloat(self.message.contents.count), alignment: .topLeading)
             
             VStack(alignment: .leading, spacing: -0.5) {
                 ForEach(Array(self.message.contents.enumerated()), id: \.0) { row in
@@ -212,6 +214,7 @@ public struct BinaryDataCellsView: View {
                         .fontWeight(.light)
                         .modifier(Monospaced())
                         .frame(width: nil, height: 30.0, alignment: .center)
+                        .padding(.bottom, 5.0)
                 }
             }
         }
