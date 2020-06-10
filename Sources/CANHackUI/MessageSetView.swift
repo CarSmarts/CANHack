@@ -22,7 +22,12 @@ public struct MessageSetView: View {
     
     public var body: some View {
         List(document.activeSignalSet.ids) { id in
-            MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder)
+            ZStack {
+            MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id])
+                
+            NavigationLink(destination: MessageDetailView(stats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id]), label: { EmptyView() })
+
+            }
         }
     }
 }

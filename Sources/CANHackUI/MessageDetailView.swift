@@ -15,6 +15,7 @@ struct MessageDetailView: View {
         
         self.selection = Selection(numRows: 1, numColumns: 8)
         self.selection.signals = self.decoder.signals
+        self.selection.numRows = self.message.contents.count
     }
 
     @ObservedObject public var stats: GroupedStat<Message, MessageID>
@@ -51,27 +52,34 @@ struct MessageDetailView: View {
     }
     
     public var body: some View {
-        HStack {
-            BinaryDataCellsView(message: self.message, decoder: self.$decoder, selection: self.selection)
+        VStack() {
+            MessageStatView(groupStats: stats, decoder: self.$decoder)
             
-            VStack(alignment: .center) {
-                if selection.isActive && selection.activeDecoderSignal == nil {
-                    Button(action: self.createSignal) {
-                        Image(systemName: "plus.square")
-                    }
-                } else if selection.activeDecoderSignal != nil {
-                    Button(action: self.eraseSignal) {
-                        Image(systemName: "minus.square")
+            HStack {
+                BinaryDataCellsView(message: self.message, decoder: self.$decoder, selection: self.selection)
+                
+                VStack(alignment: .center) {
+                    if selection.activeDecoderSignal == nil {
+                        Button(action: self.createSignal) {
+                            Image(systemName: "plus.square")
+                        }
+                        .disabled(!selection.isActive)
+                    } else {
+                        Button(action: self.eraseSignal) {
+                            Image(systemName: "minus.square")
+                        }
                     }
                 }
+                .buttonStyle(BorderlessButtonStyle())
             }
-            .buttonStyle(BorderlessButtonStyle())
+            Spacer()
         }
+        .padding()
     }
 }
 
 struct MessageDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MessageDetailView(stats: Mock.mockGroupedSet[0xAF81111], decoder: Mock.$mockDecoderMessage)
+        MessageDetailView(stats: Mock.mockGroupedSet[0x12F85351], decoder: Mock.$mockDecoderMessage)
     }
 }

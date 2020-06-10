@@ -19,15 +19,13 @@ struct Monospaced: ViewModifier {
 }
 
 struct MessageIDView: View {
-    public init(id: MessageID, decoder: Binding<DecoderMessage>, expanded: Binding<Bool>) {
+    public init(id: MessageID, decoder: Binding<DecoderMessage>) {
         self.id = id
         self._decoder = decoder
-        self._expanded = expanded
     }
     
     public var id: MessageID
     @Binding var decoder: DecoderMessage
-    @Binding var expanded: Bool
     
     var body: some View {
         HStack {
@@ -39,27 +37,15 @@ struct MessageIDView: View {
                 .font(.subheadline)
             
             TextField("sender", text: $decoder.sendingNode)
+                .frame(width: 70.0)
                 .font(.subheadline)
-            
-            Button(action: {
-                self.expanded.toggle()
-            }) {
-            if expanded {
-                Image(systemName: "chevron.up")
-            } else {
-                Image(systemName: "chevron.down")
-                }
-            }
-//            .padding(5.0)
-            .buttonStyle(BorderlessButtonStyle())
         }
     }
 }
 
 struct MessageStatView: View {
     @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
-    @Binding public var decoder: CarDecoder
-    @State private var expanded: Bool = false
+    @Binding public var decoder: DecoderMessage
 
     var shortList: ArraySlice<SignalStat<Message>> {
         groupStats.stats.prefix(10)
@@ -76,21 +62,18 @@ struct MessageStatView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: nil) {
+        VStack(alignment: .leading) {
 
-            MessageIDView(id: groupStats.group, decoder: $decoder[groupStats.group], expanded: $expanded)
-                
-            NavigationLink(destination: MessageDetailView(stats: groupStats, decoder: $decoder[groupStats.group]), label: { EmptyView() })
-            
+            MessageIDView(id: groupStats.group, decoder: $decoder)
+                            
                 VStack(alignment: .leading, spacing: 2) {
                     ForEach(shortList, id: \.signal) { signalStat in
-                        ZStack(alignment: .leading) {
-                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.groupStats.scale, colorChoice: AnyHashable(signalStat.signal))
-
-                            Text(signalStat.signal.contentDescription)
-                            .modifier(Monospaced())
-                                .padding(.leading)
-                        }
+                        Text(signalStat.signal.contentDescription)
+                        .modifier(Monospaced())
+                        .padding(.leading)
+                        .frame(maxWidth: .infinity, minHeight: 13.0, maxHeight: 30.0, alignment: .leading)
+                        .background(                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.groupStats.scale, colorChoice: AnyHashable(signalStat.signal))
+                        )
                 }
                 
                 Group {
