@@ -18,6 +18,34 @@ extension InstanceList {
     }
 }
 
+extension SortedArray {
+    private func _find(closest element: Element, lowerIndex: Int, upperIndex: Int) -> Int {
+        guard (lowerIndex <= upperIndex) else {
+            return lowerIndex
+        }
+        
+        let middleIndex = (lowerIndex + upperIndex) / 2
+        if self[middleIndex] == element {
+            return middleIndex
+        } else if predicate(self[middleIndex], element) {
+            return _find(closest: element, lowerIndex: middleIndex + 1, upperIndex: upperIndex)
+        } else {
+            return _find(closest: element, lowerIndex: lowerIndex, upperIndex: upperIndex - 1)
+        }
+    }
+    
+    func find(closest element: Element) -> Int {
+        var idx =  _find(closest: element, lowerIndex: 0, upperIndex: count - 1)
+        
+        if idx > count {
+            idx = count - 1
+        }
+        
+        return idx
+    }
+}
+
+
 public struct OccuranceGraphScale {
     public var minDifference: CGFloat = 0.75
     
@@ -77,14 +105,95 @@ struct OccuranceGraphRow: View {
     }
 }
 
+struct ScrubView: View {
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                Color.red
+                    .opacity(0.80)
+                    .frame(width: 2.0, height: geo.size.height, alignment: .center)
+            }
+        }
+    }
+}
+
 struct OccuranceGraph: View {
     @ObservedObject var data: GroupedStat<Message, MessageID>
     public var scale: OccuranceGraphScale
+    
+    @Binding public var activeSignal: SignalInstance<Message>
+    
+    @State private var activeIndex: Int = 0 {
+        didSet {
+            if activeIndex < 0 {
+                activeIndex = 0
+            }
+            if activeIndex > data.signalList.count {
+                activeIndex = data.signalList.count - 1
+            }
+            activeSignal = data.signalList[activeIndex]
+        }
+    }
+    @State private var lastActiveIndex: Int = 0
+
+    func hitTest(xpos: CGFloat, width: CGFloat) {
+        let last = data.lastTimestamp
+        let first = data.firstTimestamp
         
+        guard last != 0, first != 0, first != last else {
+            return
+        }
+        
+        let range = last - first
+        let target = Int((width - xpos) * CGFloat(range)) + first
+        
+        var fakeMessage = data.lastInstance!
+        fakeMessage.timestamp = target
+        
+        let closestIdx = data.signalList.find(closest: fakeMessage)
+        activeSignal = data.signalList[closestIdx]
+        
+        print("Scrub to:", closestIdx)
+    }
+    
+    var shortList: ArraySlice<SignalStat<Message>> {
+        data.stats.prefix(10)
+    }
+    
+    var remander: Int {
+        data.stats.count - 10
+    }
+
     var body: some View {
-        VStack {
-            ForEach(data.stats, id: \.signal) { signalStat in
-                OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.scale)
+        VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 2) {
+                ForEach(self.shortList, id: \.signal) { signalStat in
+                    Text(signalStat.signal.contentDescription)
+                    .modifier(Monospaced())
+                    .padding(.leading)
+                    .frame(maxWidth: .infinity, minHeight: 13.0, maxHeight: 30.0, alignment: .leading)
+                    .background(                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.data.scale, colorChoice: AnyHashable(signalStat.signal))
+                    )
+                }
+            }
+            .gesture(
+                DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
+                .onChanged({ value in
+                    let offset = Int(value.translation.width / 10.0)
+                    self.activeIndex = self.lastActiveIndex + offset
+                })
+                .onEnded({ _ in
+                    self.lastActiveIndex = self.activeIndex
+                })
+            )
+            .overlay(ScrubView(), alignment: .center)
+
+            Group {
+                if self.remander > 0 {
+                    Text("+ \(self.remander) more")
+                        .font(.footnote)
+                        .fontWeight(.light)
+                }
             }
         }
     }

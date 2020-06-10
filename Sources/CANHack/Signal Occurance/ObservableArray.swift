@@ -19,7 +19,7 @@ public class AppendArray<Element>: ObservableArrayBase<Element> {
 }
 
 public class SortedArray<Element: Equatable>: ObservableArrayBase<Element> {
-    private let predicate: (Element, Element) -> Bool
+    public let predicate: (Element, Element) -> Bool
     
     public init(sorting array: [Element] = [], predicate: @escaping (Element, Element) -> Bool) {
         self.predicate = predicate

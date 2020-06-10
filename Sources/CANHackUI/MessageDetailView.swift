@@ -16,6 +16,9 @@ struct MessageDetailView: View {
         self.selection = Selection(numRows: 1, numColumns: 8)
         self.selection.signals = self.decoder.signals
         self.selection.numRows = self.message.contents.count
+        
+        // start at last position?
+        self.scrubPosition = self.stats.signalList.count - 1
     }
 
     @ObservedObject public var stats: GroupedStat<Message, MessageID>
@@ -27,9 +30,16 @@ struct MessageDetailView: View {
     }
         
     @ObservedObject private var selection: Selection
-                
+    
+    @State var scrubPosition: Int = 0
+    
     var message: Message {
-        return stats.lastInstance?.signal ?? Message(id: 0x8FF1111, contents: [])
+        guard scrubPosition < stats.signalList.count else {
+            print("signalAccess out of range")
+            return Message(id: 0xAF81111, contents: Array(repeating: 0x00, count: selection.numRows))
+        }
+        
+        return stats.signalList[scrubPosition].signal
     }
     
     fileprivate func eraseSignal() {
@@ -54,7 +64,7 @@ struct MessageDetailView: View {
     public var body: some View {
         VStack() {
             MessageStatView(groupStats: stats, decoder: self.$decoder)
-            
+
             HStack {
                 BinaryDataCellsView(message: self.message, decoder: self.$decoder, selection: self.selection)
                 

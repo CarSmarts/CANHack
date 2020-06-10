@@ -44,9 +44,20 @@ struct MessageIDView: View {
 }
 
 struct MessageStatView: View {
+    public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
+        self.groupStats = groupStats
+        self._decoder = decoder
+        
+        if let first = groupStats.firstInstance {
+            activeSignal = first
+        }
+    }
+    
     @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
     @Binding public var decoder: DecoderMessage
 
+    @State private var activeSignal: SignalInstance<Message> = SignalInstance(signal: Message(id: 0xAF81111, contents: []), timestamp: 0)
+    
     var shortList: ArraySlice<SignalStat<Message>> {
         groupStats.stats.prefix(10)
     }
@@ -65,25 +76,9 @@ struct MessageStatView: View {
         VStack(alignment: .leading) {
 
             MessageIDView(id: groupStats.group, decoder: $decoder)
-                            
-                VStack(alignment: .leading, spacing: 2) {
-                    ForEach(shortList, id: \.signal) { signalStat in
-                        Text(signalStat.signal.contentDescription)
-                        .modifier(Monospaced())
-                        .padding(.leading)
-                        .frame(maxWidth: .infinity, minHeight: 13.0, maxHeight: 30.0, alignment: .leading)
-                        .background(                            OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.groupStats.scale, colorChoice: AnyHashable(signalStat.signal))
-                        )
-                }
                 
-                Group {
-                    if self.remander > 0 {
-                        Text("+ \(self.remander) more")
-                            .font(.footnote)
-                            .fontWeight(.light)
-                    }
-                }
-            }
+            OccuranceGraph(data: self.groupStats, scale: self.groupStats.scale, activeSignal: $activeSignal)
+            
         }
     }
 }
