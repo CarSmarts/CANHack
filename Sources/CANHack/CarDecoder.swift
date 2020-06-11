@@ -75,7 +75,7 @@ public struct DecoderSignal: Codable, Equatable {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             startBit = try values.decode(Int.self, forKey: .startBit)
             len = try values.decode(Int.self, forKey: .len)
-            len = min(len, 1)
+            len = max(len, 1)
             
             littleEndian = try values.decode(Bool.self, forKey: .littleEndian)
             signed = try values.decode(Bool.self, forKey: .signed)
@@ -84,7 +84,7 @@ public struct DecoderSignal: Codable, Equatable {
 
         public init(startBit: Int, len: Int, littleEndian: Bool = false, signed: Bool = false) {
             self.startBit = startBit
-            self.len = min(len, 1)
+            self.len = max(len, 1)
             self.littleEndian = littleEndian
             self.signed = signed
         }
@@ -92,7 +92,7 @@ public struct DecoderSignal: Codable, Equatable {
         public var startBit: Int
         public var len: Int {
             didSet {
-                len = min(len, 1)
+                len = max(len, 1)
             }
         }
         public var littleEndian: Bool
