@@ -202,7 +202,8 @@ struct OccuranceGraph: View {
                     Text(signalStat.signal.contentDescription)
                     .modifier(Monospaced())
                     .padding(.leading)
-                    .frame(maxWidth: .infinity, minHeight: 15.0, maxHeight: 30.0, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(height: 27.0)
                     .background(
                         OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.data.scale, colorChoice: AnyHashable(signalStat.signal))
                     )
