@@ -34,7 +34,6 @@ struct Index: Comparable {
     var finalIndexPosition: Int {
         return column + row * 8
     }
-
     
     var row: Int
     var column: Int
@@ -61,15 +60,7 @@ class Selection: ObservableObject {
         Color.red,
         Color.orange,
     ]
-    
-    var color: Color {
-        let hash = Int(colorChoice.hashValue.magnitude)
         
-        return colors[hash % colors.count]
-    }
-    
-    var colorChoice: AnyHashable = AnyHashable(0)
-    
     var numRows: Int
     var numColumns: Int
     @Published var startIndex: Index = Index(0, 0)
@@ -87,6 +78,20 @@ class Selection: ObservableObject {
         return selectedRange.upperBound.finalIndexPosition - start
     }
     
+    func setActiveSignal(_ idx: Int) {
+        if activeDecoderSignal == signals[idx] {
+            isActive = false
+        } else {
+            isActive = true
+        }
+        
+        let start = signals[idx].location.startBit
+        
+        let index = Index(start / 8, start % 8)
+        startIndex = index
+        endIndex = index
+    }
+    
     private func signalIntersects(_ signal: DecoderSignal, _ index: Index) -> Bool {
         return signal.location.range.contains(index.finalIndexPosition)
     }
@@ -95,6 +100,10 @@ class Selection: ObservableObject {
         let mappedRange = range.lowerBound.finalIndexPosition...range.upperBound.finalIndexPosition
         
         return signal.location.range.overlaps(mappedRange)
+    }
+    
+    public func color(forSignal idx: Int) -> Color {
+        return colors[idx % colors.count]
     }
 
     func color(for index: Index) -> Color {
@@ -105,9 +114,9 @@ class Selection: ObservableObject {
         for (idx, signal) in signals.enumerated() {
             if signalIntersects(signal, index) {
                 if let activeDecoderSignal = activeDecoderSignal, activeDecoderSignal == signal {
-                    return colors[idx % colors.count].opacity(0.90)
+                    return color(forSignal: idx).opacity(0.90)
                 } else {
-                    return colors[idx % colors.count].opacity(0.75)
+                    return color(forSignal: idx).opacity(0.75)
                 }
             }
         }
@@ -122,7 +131,9 @@ class Selection: ObservableObject {
     }
     
     var activeDecoderSignal: DecoderSignal? {
-        signals.first(where: { signalIntersects($0, selectedRange)})
+        guard isActive else { return nil }
+        
+        return signals.first(where: { signalIntersects($0, selectedRange)})
     }
 }
 
@@ -230,15 +241,31 @@ public struct BinaryDataCellsView: View {
 //}
 
 struct BinaryDataView_Previews: PreviewProvider {
+    struct BinaryDataPreview: View {
+        internal init(message: Message) {
+            self.message = message
+            self.selection = Selection(numRows: message.contents.count, numColumns: 8)
+        }
+        
+        @State var decoderMessage = Mock.decoderMessage
+        
+        var message: Message
+        var selection: Selection
+        
+        var body: some View {
+            BinaryDataCellsView(message: message, decoder: $decoderMessage, selection: selection)
+        }
+    }
+    
     static var previews: some View {
-        let groupedSet = Mock.mockGroupedSet
+        let groupedSet = Mock.groupedSet
         
         let example = groupedSet.stats.first { stat in
             stat.group == 0x12F85250
         }!
         
         let message = example.lastInstance!.signal
-        
-        return BinaryDataCellsView(message: message, decoder: Mock.$mockDecoderMessage, selection: .init(numRows: 3, numColumns: 8)).previewLayout(.fixed(width: 400, height: 170))
+
+        return BinaryDataPreview(message: message).previewLayout(.fixed(width: 400, height: 170))
     }
 }

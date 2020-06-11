@@ -6,16 +6,9 @@
 //
 
 import SwiftUI
-import CANHack
+import SmartCarUI
 
-struct DecoderSignalView: View {
-    @Binding var decoderSignal: DecoderSignal
-    let index: Int
-    
-    var body: some View {
-        return Text("Decoder Signal")
-    }
-}
+import CANHack
 
 struct MessageDetailView: View {
     public init(stats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
@@ -40,7 +33,7 @@ struct MessageDetailView: View {
     }
         
     @ObservedObject private var selection: Selection
-    @State var activeSignal: SignalInstance<Message> = Mock.mockSignalInstance
+    @State var activeSignal: SignalInstance<Message> = Mock.signalInstance
     
     fileprivate func eraseSignal() {
         selection.isActive = false
@@ -64,37 +57,57 @@ struct MessageDetailView: View {
     public var body: some View {
         let stats = self.stats
         
-        return VStack {
-            MessageIDView(id: stats.group, decoder: $decoder)
-                
-            OccuranceGraph(data: stats, scale: stats.scale)
-                .overlay(ScrubView(data: stats.signalList, scale: stats.scale, activeSignal: $activeSignal))
+        return ScrollView {
+            Group {
+                Group {
+                    MessageIDView(id: stats.group, decoder: $decoder)
+                        
+                    OccuranceGraph(data: stats, scale: stats.scale)
+                        .overlay(ScrubView(data: stats.signalList, scale: stats.scale, activeSignal: $activeSignal))
 
-            HStack {
-                BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)
+                    HStack {
+                        BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)
+                        
+                        VStack(alignment: .center) {
+                            if selection.activeDecoderSignal == nil {
+                                Button(action: self.createSignal) {
+                                    Image(systemName: "plus.square")
+                                }
+                                .disabled(!selection.isActive)
+                            } else {
+                                Button(action: self.eraseSignal) {
+                                    Image(systemName: "minus.square")
+                                }
+                            }
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                }.layoutPriority(1.0)
                 
-                VStack(alignment: .center) {
-                    if selection.activeDecoderSignal == nil {
-                        Button(action: self.createSignal) {
-                            Image(systemName: "plus.square")
-                        }
-                        .disabled(!selection.isActive)
-                    } else {
-                        Button(action: self.eraseSignal) {
-                            Image(systemName: "minus.square")
-                        }
+                Enumerating(decoder.signals) { (signal, idx) in
+                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], index: idx, highlightColor: self.selection.color(forSignal: idx))
+                        .background(self.selection.activeDecoderSignal == signal ? Color.secondary.opacity(0.80) : Color.clear)
+                        .onTapGesture {
+                            self.selection.setActiveSignal(idx)
                     }
                 }
-                .buttonStyle(BorderlessButtonStyle())
-            }
-            Spacer()
+                
+                Spacer()
+            }.padding()
         }
-        .padding()
     }
 }
 
 struct MessageDetailView_Previews: PreviewProvider {
+    struct MockView: View {
+        @State var decoderMessage = Mock.decoderMessage
+        
+        var body: some View {
+            MessageDetailView(stats: Mock.groupedSet[0x12F85351], decoder: $decoderMessage)
+        }
+    }
+    
     static var previews: some View {
-        MessageDetailView(stats: Mock.mockGroupedSet[0x12F85351], decoder: Mock.$mockDecoderMessage)
+        MockView()
     }
 }

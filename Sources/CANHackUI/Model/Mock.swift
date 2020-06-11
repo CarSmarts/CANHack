@@ -10,7 +10,36 @@ import CANHack
 import SwiftUI
 import AppFolder
 
+public struct MockHelper {
+    public var testSet: SignalSet<Message> = {
+        GVRetParser().parse(string: Mock.testFile)
+    }()
+    
+    public var groupedSet: GroupedSignalSet<Message, MessageID> = {
+        let mockTestSet = GVRetParser().parse(string: Mock.testFile)
+        
+        return GroupedSignalSet(grouping: mockTestSet) { stat in
+            stat.signal.id
+        }
+    }()
+    
+    public var signalInstance: SignalInstance<Message> = {
+        SignalInstance(signal: Message(id: 0xAF81111, contents: []), timestamp: 0)
+    }()
+
+    public var decoder: CarDecoder = {
+        let decoder = CarDecoder([
+            DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
+        ])
+        
+        return decoder
+    }()
+    
+    public var decoderMessage = DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
+}
+
 public struct Mock {
+    private static var _mockHelper = MockHelper()
     
     public static var testFile: String { return """
     TimeStamp,ID,Extended,Dir,Bus,LEN,D1,D2,D3,D4,D5,D6,D7,D8
@@ -175,31 +204,26 @@ public struct Mock {
     18730,0x12F83010,true,Rx,1,1,80
     """
     }
-    
-    public static var mockTestSet: SignalSet<Message> {
-        GVRetParser().parse(string: testFile)
-    }
-    
-    public static var mockGroupedSet: GroupedSignalSet<Message, MessageID> {
-        GroupedSignalSet(grouping: mockTestSet) { stat in
-            stat.signal.id
-        }
-    }
-    
-    public static var mockSignalInstance: SignalInstance<Message> {
-        return SignalInstance(signal: Message(id: 0xAF81111, contents: []), timestamp: 0)
-    }
-    
-    public static var mockDecoder: CarDecoder {
-        let decoder = CarDecoder([
-            DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
-        ])
-        
-        return decoder
-    }
-    
-    @State public static var mockDecoderMessage = DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
 
+    public static var testSet: SignalSet<Message> {
+        _mockHelper.testSet
+    }
+    
+    public static var groupedSet: GroupedSignalSet<Message, MessageID> {
+        _mockHelper.groupedSet
+    }
+    
+    public static var signalInstance: SignalInstance<Message> {
+        _mockHelper.signalInstance
+    }
+
+    public static var decoder: CarDecoder {
+        _mockHelper.decoder
+    }
+    
+    public static var decoderMessage: DecoderMessage {
+        _mockHelper.decoderMessage
+    }
     
     public static var globalManager = { () -> CANHackManager in
         let manager = CANHackManager()
@@ -214,7 +238,7 @@ public class MockMessageSetDocument: MessageSetDocument {
     public init() {
         super.init(fileURL: AppFolder.tmp.baseURL.appendingPathComponent("testSet"))
     
-        activeSignalSet = Mock.mockTestSet
+        activeSignalSet = Mock.testSet
     }
     
     public override func contents(forType typeName: String) throws -> Any {
@@ -231,7 +255,7 @@ public class MockDecoderDocument: CarDecoderDocument {
     public init() {
         super.init(fileURL: AppFolder.tmp.baseURL.appendingPathComponent("testDecoder"))
         
-        decoder = Mock.mockDecoder
+        decoder = Mock.decoder
     }
     
     public override func contents(forType typeName: String) throws -> Any {

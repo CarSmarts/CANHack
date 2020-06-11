@@ -23,7 +23,7 @@ public struct MessageSetView: View {
     public var body: some View {
         List(document.activeSignalSet.ids) { id in
             ZStack {
-                MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.mockSignalInstance))
+                MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.signalInstance))
                 
                 NavigationLink(destination: MessageDetailView(stats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id]), label: { EmptyView() })
 
@@ -35,11 +35,11 @@ public struct MessageSetView: View {
 struct MessageSetView_Previews: PreviewProvider {
     static var doc = { () -> MessageSetDocument in
         let doc = MessageSetDocument(fileURL: AppFolder.tmp.url.appendingPathComponent("test"))
-        doc.activeSignalSet = Mock.mockTestSet
+        doc.activeSignalSet = Mock.testSet
         return doc
     }()
     
     static var previews: some View {
-        MessageSetView(document: doc, decoder: .constant(Mock.mockDecoder))
+        MessageSetView(document: doc, decoder: .constant(Mock.decoder))
     }
 }

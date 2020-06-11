@@ -66,6 +66,6 @@ struct MessageStatView: View {
 
 struct MessageStatView_Previews: PreviewProvider {
     static var previews: some View {
-        return MessageSetView(document: MockMessageSetDocument(), decoder: .constant(Mock.mockDecoder))
+        return MessageSetView(document: MockMessageSetDocument(), decoder: .constant(Mock.decoder))
     }
 }

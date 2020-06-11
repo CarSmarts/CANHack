@@ -222,7 +222,7 @@ struct OccuranceGraph: View {
 
 struct OccuranceGraphView_Previews: PreviewProvider {
     static var previews: some View {
-        let groupedSet = Mock.mockGroupedSet
+        let groupedSet = Mock.groupedSet
         
         let goodExample = groupedSet.stats.first { stat in
             stat.stats.count > 1
@@ -232,11 +232,11 @@ struct OccuranceGraphView_Previews: PreviewProvider {
         
         return Group {
             Unwrap(goodExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]), activeSignal: .constant(Mock.mockSignalInstance))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance))
             }
             
             Unwrap(otherExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.mockDecoder[$0.group]), activeSignal: .constant(Mock.mockSignalInstance))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance))
             }
         }.previewLayout(.fixed(width: 375, height: 170))
     }
