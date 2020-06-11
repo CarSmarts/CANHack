@@ -36,10 +36,9 @@ struct MessageDetailView: View {
     @State var activeSignal: SignalInstance<Message> = Mock.signalInstance
     
     fileprivate func eraseSignal() {
+        let activeSignal = selection.activeDecoderSignal!
         selection.isActive = false
 
-        let activeSignal = selection.activeDecoderSignal!
-        
         decoder.signals.removeAll { decoderSignal in
             decoderSignal == activeSignal
         }
@@ -63,7 +62,7 @@ struct MessageDetailView: View {
                     MessageIDView(id: stats.group, decoder: $decoder)
                         
                     OccuranceGraph(data: stats, scale: stats.scale)
-                        .overlay(ScrubView(data: stats.signalList, scale: stats.scale, activeSignal: $activeSignal))
+                        .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
 
                     HStack {
                         BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)

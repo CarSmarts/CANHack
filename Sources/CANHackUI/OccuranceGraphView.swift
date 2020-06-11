@@ -18,8 +18,8 @@ extension InstanceList {
     }
 }
 
-extension CGFloat {
-    func clamped(to min: CGFloat, max: CGFloat) -> CGFloat {
+extension Comparable {
+    func clamped(to min: Self, max: Self) -> Self {
         if self < min {
             return min
         } else if self > max {
@@ -30,33 +30,14 @@ extension CGFloat {
     }
 }
 
-extension SortedArray {
-    private func _find(closest element: Element, lowerIndex: Int, upperIndex: Int) -> Int {
-        guard (lowerIndex <= upperIndex) else {
-            return lowerIndex
-        }
+extension Collection {
+    subscript(clamping idx: Index) -> Element {
+        var lastPosible = endIndex
+        formIndex(&lastPosible, offsetBy: -1)
         
-        let middleIndex = (lowerIndex + upperIndex) / 2
-        if self[middleIndex] == element {
-            return middleIndex
-        } else if predicate(self[middleIndex], element) {
-            return _find(closest: element, lowerIndex: middleIndex + 1, upperIndex: upperIndex)
-        } else {
-            return _find(closest: element, lowerIndex: lowerIndex, upperIndex: upperIndex - 1)
-        }
-    }
-    
-    func find(closest element: Element) -> Int {
-        var idx =  _find(closest: element, lowerIndex: 0, upperIndex: count - 1)
-        
-        if idx > count {
-            idx = count - 1
-        }
-        
-        return idx
+        return self[idx.clamped(to: startIndex, max: lastPosible)]
     }
 }
-
 
 public struct OccuranceGraphScale {
     public var minDifference: CGFloat = 0.75
@@ -119,36 +100,55 @@ struct OccuranceGraphRow: View {
 
 struct ScrubView: View {
     
-    var data: SignalList<Message>
+    var data: GroupedStat<Message, MessageID>
     var scale: OccuranceGraphScale
     
     @Binding public var activeSignal: SignalInstance<Message>
     
-    @State private var activeIndex: Int = 0 {
-        didSet {
-            if activeIndex < 0 {
-                activeIndex = 0
-            }
-            if activeIndex >= data.count {
-                activeIndex = data.count - 1
-            }
-            activeSignal = data[activeIndex]
+    
+    func findActiveSignal(in list: SignalList<Message>, target: Timestamp) -> SignalInstance<Message> {
+        guard list.count > 0 else {
+            return activeSignal
+        }
+        
+        var fakeMessage = list.last!
+        fakeMessage.timestamp = target
+
+        let index = list.search(for: fakeMessage).index
+        let upper = list[clamping: index]
+        let lower = list[clamping: index - 1]
+        
+        if abs(upper.timestamp - target) < abs(lower.timestamp - target) {
+            return upper
+        } else {
+            return lower
         }
     }
     
-    func hitTest(xpos: CGFloat, width: CGFloat) {
-        guard let last = data.last?.timestamp,
-            let first = data.first?.timestamp, first != last else {
+    func hitTest(location: CGPoint, size: CGSize) {
+        let hoveredStatIndex = Int((location.y / size.height) * CGFloat(data.stats.count))
+        
+        let hoveredStatSignalList = data.stats[clamping: hoveredStatIndex].signalList
+        
+        guard let last = data.signalList.last?.timestamp,
+            let first = data.signalList.first?.timestamp, first != last else {
                 return
         }
         
+        // compute target timestamp from xlocation
         let range = last - first
-        let target = Int((xpos / width) * CGFloat(range)) + first
+        let target = Int((location.x / size.width) * CGFloat(range)) + first
+                
+        // first search in our hovered StatIndex
+        activeSignal = findActiveSignal(in: hoveredStatSignalList, target: target)
         
-        var fakeMessage = data.last!
-        fakeMessage.timestamp = target
+        let hypotheticalViewPosition = computeScrubOffset(width: size.width)
         
-        activeIndex = data.find(closest: fakeMessage)
+        // if we're more than five pixels away from our signal
+        if abs(hypotheticalViewPosition - location.x) > 5.0 {
+            // search again in all the signals
+            activeSignal = findActiveSignal(in: data.signalList, target: target)
+        }
     }
     
     private func computeScrubOffset(width: CGFloat) -> CGFloat {
@@ -167,7 +167,7 @@ struct ScrubView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
                     .onChanged({ value in
-                        self.hitTest(xpos: value.location.x, width: geo.size.width)
+                        self.hitTest(location: value.location, size: geo.size)
                         
                         self.offset = self.computeScrubOffset(width: geo.size.width)
                     })
