@@ -41,7 +41,7 @@ struct Index: Comparable {
 
 extension DecoderSignal.Location {
     var range: ClosedRange<Int> {
-        startBit...startBit+len
+        startBit...startBit+len-1
     }
 }
 
@@ -75,7 +75,7 @@ class Selection: ObservableObject {
     }
 
     var len: Int {
-        return selectedRange.upperBound.finalIndexPosition - start
+        return selectedRange.upperBound.finalIndexPosition - start + 1
     }
     
     func setActiveSignal(_ idx: Int) {

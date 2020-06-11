@@ -71,15 +71,30 @@ public struct DecoderSignal: Codable, Equatable {
     public var name: String
     
     public struct Location: Codable, Equatable {
+        public init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            startBit = try values.decode(Int.self, forKey: .startBit)
+            len = try values.decode(Int.self, forKey: .len)
+            len = min(len, 1)
+            
+            littleEndian = try values.decode(Bool.self, forKey: .littleEndian)
+            signed = try values.decode(Bool.self, forKey: .signed)
+
+        }
+
         public init(startBit: Int, len: Int, littleEndian: Bool = false, signed: Bool = false) {
             self.startBit = startBit
-            self.len = len
+            self.len = min(len, 1)
             self.littleEndian = littleEndian
             self.signed = signed
         }
         
         public var startBit: Int
-        public var len: Int
+        public var len: Int {
+            didSet {
+                len = min(len, 1)
+            }
+        }
         public var littleEndian: Bool
         public var signed: Bool
     }
