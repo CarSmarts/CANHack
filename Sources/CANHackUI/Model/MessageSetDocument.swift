@@ -41,52 +41,55 @@ public class MessageSetDocument: UIDocument, ObservableObject {
     }
 
     private var parser = GVRetParser()
-    
+    private var loadingQueue: OperationQueue
+
     public override init(fileURL url: URL) {
-            super.init(fileURL: url)
-                        
-            NotificationCenter.default.addObserver(forName: UIDocument.stateChangedNotification, object: self, queue: .main) { notification in
-                self.printState()
-            }
+        loadingQueue = OperationQueue()
+        loadingQueue.qualityOfService = .userInitiated
+        
+        super.init(fileURL: url)
+                    
+        NotificationCenter.default.addObserver(forName: UIDocument.stateChangedNotification, object: self, queue: .main) { notification in
+            self.printState()
         }
+    }
     
-        public class UnimplementedError: NSError {
-            init() {
-                super.init(domain: "CS", code: 2, userInfo: nil)
-            }
-            
-            required init?(coder: NSCoder) {
-                super.init(coder: coder)
-            }
-        }
-    
-        public class ParseError: NSError {
-            init() {
-                super.init(domain: "CS", code: 1, userInfo: nil)
-            }
-            
-            required init?(coder: NSCoder) {
-                super.init(coder: coder)
-            }
-        }
-            
-        public override func contents(forType typeName: String) throws -> Any {
-            return Data()
+    public class UnimplementedError: NSError {
+        init() {
+            super.init(domain: "CS", code: 2, userInfo: nil)
         }
         
-        public override func load(fromContents contents: Any, ofType typeName: String?) throws {
-            guard let data = contents as? Data,
-                let contents = String(data: data, encoding: .utf8)
-            else {
-                throw ParseError()
-            }
-            
-            loading = true
-            parser.parse(string: contents) { loadedSet in
+        required init?(coder: NSCoder) {
+            super.init(coder: coder)
+        }
+    }
+
+    public class ParseError: NSError {
+        init() {
+            super.init(domain: "CS", code: 1, userInfo: nil)
+        }
+        
+        required init?(coder: NSCoder) {
+            super.init(coder: coder)
+        }
+    }
+        
+    public override func contents(forType typeName: String) throws -> Any {
+        return Data()
+    }
+    
+    public override func read(from url: URL) throws {
+        loading = true
+        do {
+            try parser.parse(url: url, queue: loadingQueue) { loadedSet in
                 DispatchQueue.main.async {
                     self.loading = false
                     self.activeSignalSet = loadedSet
                 }
             }
+        } catch {
+            loading = false
+            throw error
+        }
     }
 }

@@ -19,7 +19,7 @@ struct Monospaced: ViewModifier {
 }
 
 struct MessageIDView: View {
-    public init(id: MessageID, decoder: Binding<DecoderMessage>, canEdit: Bool = true) {
+    public init(id: MessageID, decoder: Binding<DecoderMessage>, canEdit: Bool = false) {
         self.id = id
         self._decoder = decoder
         self.canEdit = canEdit
