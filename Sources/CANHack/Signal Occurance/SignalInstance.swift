@@ -50,20 +50,20 @@ public protocol InstanceList {
 extension InstanceList {
     /// The first timestamp in this dataset
     public var firstTimestamp: Timestamp {
-        return timestamps.first ?? 0
+        return firstInstance?.timestamp ?? 0
     }
     
     /// The last timestamp in this dataset
     public var lastTimestamp: Timestamp {
-        return timestamps.last ?? 0
+        return lastInstance?.timestamp ?? 0
     }
     
     public var timestamps: [Timestamp] {
-        return signalList.lazy.map { $0.timestamp }
+        return signalList.map { $0.timestamp }
     }
     
     public var firstInstance: SignalInstance<S>? {
-        return signalList.last
+        return signalList.first
     }
 
     public var lastInstance: SignalInstance<S>? {

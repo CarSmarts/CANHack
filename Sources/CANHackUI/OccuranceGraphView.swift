@@ -209,6 +209,7 @@ struct OccuranceGraph: View {
                     )
                 }
             }
+            .compositingGroup()
 
             Group {
                 if self.remander > 0 {

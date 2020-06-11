@@ -10,6 +10,7 @@ import Foundation
 
 /// Class for Parsing GVRet csv logs
 public class GVRetParser: Parser {
+    
     public typealias S = Message
     
     public init() {

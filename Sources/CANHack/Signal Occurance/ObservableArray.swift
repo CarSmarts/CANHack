@@ -66,7 +66,7 @@ extension SortedArray {
         } else if predicate(self[middleIndex], element) {
             return _search(for: element, lowerIndex: middleIndex + 1, upperIndex: upperIndex)
         } else {
-            return _search(for: element, lowerIndex: lowerIndex, upperIndex: upperIndex - 1)
+            return _search(for: element, lowerIndex: lowerIndex, upperIndex: middleIndex - 1)
         }
     }
 }

@@ -59,7 +59,7 @@ struct MessageDetailView: View {
         return ScrollView {
             Group {
                 Group {
-                    MessageIDView(id: stats.group, decoder: $decoder)
+                    MessageIDView(id: stats.group, decoder: $decoder, canEdit: true)
                         
                     OccuranceGraph(data: stats, scale: stats.scale)
                         .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))

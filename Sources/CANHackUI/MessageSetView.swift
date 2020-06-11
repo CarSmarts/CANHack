@@ -14,18 +14,27 @@ import AppFolder
 public struct MessageSetView: View {
     @ObservedObject public var document: MessageSetDocument
     @Binding public var decoder: CarDecoder
-
+    
+    var groupedByIdSub: AnyCancellable?
+    
     public init(document: MessageSetDocument, decoder: Binding<CarDecoder>) {
         self.document = document
         self._decoder = decoder
+        
+        groupedByIdSub = document.$activeSignalSet.map(\.groupedById).subscribe(groupedSetSubject)
     }
     
+    var groupedSetSubject = CurrentValueSubject<GroupedSignalSet<Message, MessageID>, Never>(SignalSet<Message>().groupedById)
+    var groupedSet: GroupedSignalSet<Message, MessageID> {
+        groupedSetSubject.value
+    }
+
     public var body: some View {
         List(document.activeSignalSet.ids) { id in
             ZStack {
-                MessageStatView(groupStats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.signalInstance))
+                MessageStatView(groupStats: self.groupedSet[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.signalInstance))
                 
-                NavigationLink(destination: MessageDetailView(stats: self.document.activeSignalSet.groupedById[id], decoder: self.$decoder[id]), label: { EmptyView() })
+                NavigationLink(destination: MessageDetailView(stats: self.groupedSet[id], decoder: self.$decoder[id]), label: { EmptyView() })
 
             }
         }

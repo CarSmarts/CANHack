@@ -13,14 +13,13 @@ public protocol Parser {
     
     /// Main important function
     func parse(line: String) -> SignalInstance<S>?
-    
-    /// Has default implementation
-    func parse(from file: URL) -> SignalSet<S>
 }
 
 public extension Parser {
     func parse(string: String) -> SignalSet<S> {
-        let lines = string.components(separatedBy: .newlines)
+        let maxLoad = 500_000
+
+        let lines = string.components(separatedBy: .newlines).prefix(maxLoad)
 
         // map every line into a parsed message
         let parsed = lines.compactMap { line -> SignalInstance<S>? in
@@ -30,12 +29,19 @@ public extension Parser {
         return SignalSet<S>(signalInstances: parsed)
     }
     
-    func parse(from file: URL) -> SignalSet<S> {
-        guard let data = try? String(contentsOf: file) else {
-            return SignalSet()
+    func parse(string: String, callback: @escaping (SignalSet<S>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let maxLoad = 500_000
+
+            let lines = string.components(separatedBy: .newlines).prefix(maxLoad)
+        
+            let parsed = lines.compactMap { line -> SignalInstance<S>? in
+                return self.parse(line: line)
+            }
+            
+            let buildSet = SignalSet<S>(signalInstances: parsed)
+            
+            callback(buildSet)
         }
-
-        return parse(string: data)
     }
-
 }

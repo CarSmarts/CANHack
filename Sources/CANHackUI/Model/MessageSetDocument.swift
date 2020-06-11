@@ -15,6 +15,8 @@ public class MessageSetDocument: UIDocument, ObservableObject {
         }
     }
     
+    @Published public var loading = false
+    
     func printState() {
         print("MessageSet: \(localizedName) ", terminator: "")
         if documentState.contains(.closed) {
@@ -79,7 +81,10 @@ public class MessageSetDocument: UIDocument, ObservableObject {
                 throw ParseError()
             }
             
-            activeSignalSet = parser.parse(string: contents)
+            loading = true
+            parser.parse(string: contents) {
+                self.loading = false
+                self.activeSignalSet = $0
+            }
     }
-
 }
