@@ -82,9 +82,11 @@ public class MessageSetDocument: UIDocument, ObservableObject {
             }
             
             loading = true
-            parser.parse(string: contents) {
-                self.loading = false
-                self.activeSignalSet = $0
+            parser.parse(string: contents) { loadedSet in
+                DispatchQueue.main.async {
+                    self.loading = false
+                    self.activeSignalSet = loadedSet
+                }
             }
     }
 }
