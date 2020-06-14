@@ -86,15 +86,17 @@ extension SignalSet {
         signalList.insert(newInstance)
         
         let signal = newInstance.signal
-        
+                
         if _stats[signal] == nil {
             // this is a new signal we haven't seen yet
-            _stats[signal] = SignalStat(signal)
+            let newStat = SignalStat(signal, signalList: [newInstance])
+            _stats[signal] = newStat
             
             signals.insert(signal)
+            newStatPublisher.send(newStat)
+        } else {
+            _stats[signal]!.add(newInstance: newInstance)
         }
-        
-        _stats[signal]!.add(newInstance: newInstance)
     }
 }
 

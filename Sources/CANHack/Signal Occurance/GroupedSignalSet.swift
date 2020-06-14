@@ -31,8 +31,23 @@ public class GroupedStat<S: Signal, G: GroupingID>: InstanceList, ObservableObje
         statSubs = stats.map { (stat) in
             stat.newInstancePublisher.sink { (newInstance) in
                 self.signalList.insert(newInstance)
+                self.objectWillChange.send()
             }
         }
+    }
+    
+    fileprivate func add(newStat: SignalStat<S>) {
+        self.stats.append(newStat)
+        for instance in newStat.signalList {
+            self.signalList.insert(instance)
+        }
+        
+        newStat.newInstancePublisher.sink { (newInstance) in
+            self.signalList.insert(newInstance)
+            self.objectWillChange.send()
+        }.store(in: &statSubs)
+        
+        self.objectWillChange.send()
     }
 }
 
@@ -68,9 +83,18 @@ public class GroupedSignalSet<S: Signal, G: GroupingID>: InstanceList, Observabl
         groups = SortedArray(sorting: Array(_stats.keys))
         
         newStatSub = original.newStatPublisher.sink { newSignalStat in
+            
             let newGroup = groupingFunction(newSignalStat)
-            self._stats[newGroup] = GroupedStat(newGroup, stats: [newSignalStat])
-            self.groups.insert(newGroup)
+            
+            if self._stats[newGroup] == nil {
+                // need to create a new group
+                self._stats[newGroup] = GroupedStat(newGroup, stats: [newSignalStat])
+                
+                self.groups.insert(newGroup)
+                self.objectWillChange.send()
+            } else {
+                self._stats[newGroup]!.add(newStat: newSignalStat)
+            }
         }
     }
 }

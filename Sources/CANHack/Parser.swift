@@ -10,6 +10,10 @@ import Foundation
 
 extension Collection where Index == Int {
     func chunked(by chunkSize: Int) -> [[Element]] {
+        if chunkSize == 0 {
+            return [Array(self)]
+        }
+        
         return stride(from: 0, to: self.count, by: chunkSize).map {
             Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
         }
@@ -61,7 +65,7 @@ public extension Parser {
         
         return SignalSet<S>(signalInstances: parsed)
     }
-    
+        
     func parse(url: URL, queue: OperationQueue, callback: @escaping (SignalSet<S>) -> Void) throws {
         let maxLoad = 1_000_000
 
@@ -76,8 +80,34 @@ public extension Parser {
         
         let instances = operations.compactMap { $0.result }.flatMap { $0 }
         
+//        let clumpSize = 10
+//        var idx = 15
+
         let buildSet = SignalSet<S>(signalInstances: instances)
         
+//        let buildSet = SignalSet<S>(signalInstances: Array(instances.prefix(idx)))
+//
         callback(buildSet)
+//
+//        let timer = DispatchSource.makeTimerSource()
+//
+//        timer.schedule(deadline: .now() + .seconds(1), repeating: 1.0)
+//        timer.setEventHandler {
+//            timer.suspend()
+//            DispatchQueue.main.async {
+//                for idx in idx..<idx+clumpSize {
+//                    buildSet.add(instances[idx])
+//                }
+//            }
+//            idx += clumpSize
+//            if (idx + clumpSize >= instances.count) {
+//                timer.setEventHandler(handler: nil)
+//                timer.cancel()
+//            } else {
+//                timer.resume()
+//            }
+//        }
+//
+//        timer.resume()
     }
 }

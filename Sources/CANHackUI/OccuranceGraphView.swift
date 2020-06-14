@@ -185,7 +185,7 @@ struct ScrubView: View {
 
 struct OccuranceGraph: View {
     @ObservedObject var data: GroupedStat<Message, MessageID>
-    public var scale: OccuranceGraphScale
+    @Binding public var scale: OccuranceGraphScale
     
     var shortList: ArraySlice<SignalStat<Message>> {
         data.stats.prefix(10)
@@ -205,7 +205,7 @@ struct OccuranceGraph: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: 27.0)
                     .background(
-                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.data.scale, colorChoice: AnyHashable(signalStat.signal))
+                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.scale, colorChoice: AnyHashable(signalStat.signal))
                     )
                 }
             }
@@ -234,11 +234,11 @@ struct OccuranceGraphView_Previews: PreviewProvider {
         
         return Group {
             Unwrap(goodExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance), scale: .constant($0.scale))
             }
             
             Unwrap(otherExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance), scale: .constant($0.scale))
             }
         }.previewLayout(.fixed(width: 375, height: 170))
     }

@@ -61,7 +61,7 @@ struct MessageDetailView: View {
                 Group {
                     MessageIDView(id: stats.group, decoder: $decoder, canEdit: true)
                         
-                    OccuranceGraph(data: stats, scale: stats.scale)
+                    OccuranceGraph(data: stats, scale: .constant(stats.scale))
                         .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
 
                     HStack {

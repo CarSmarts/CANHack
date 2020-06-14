@@ -54,14 +54,16 @@ struct MessageIDView: View {
 }
 
 struct MessageStatView: View {
-    public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>, activeSignal: Binding<SignalInstance<Message>>) {
+    public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>, activeSignal: Binding<SignalInstance<Message>>, scale: Binding<OccuranceGraphScale>) {
         self.groupStats = groupStats
         self._decoder = decoder
         self._activeSignal = activeSignal
+        self._scale = scale
     }
     
     @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
     @Binding public var decoder: DecoderMessage
+    @Binding public var scale: OccuranceGraphScale
 
     @Binding var activeSignal: SignalInstance<Message>
         
@@ -69,7 +71,7 @@ struct MessageStatView: View {
         VStack(alignment: .leading) {
             MessageIDView(id: groupStats.group, decoder: $decoder)
                 
-            OccuranceGraph(data: self.groupStats, scale: self.groupStats.scale)
+            OccuranceGraph(data: self.groupStats, scale: self.$scale)
         }
     }
 }
