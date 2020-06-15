@@ -146,7 +146,7 @@ public struct BinaryDataRow: View {
 }
 
 public struct BinaryDataCellsView: View {
-    var message: Message
+    let message: Message
     @Binding var decoder: DecoderMessage
     @Binding var selection: Selection
 

@@ -65,7 +65,6 @@ public struct MessageSetView: View {
     @State var scale = OccuranceGraphScale(min: 0, max: 10)
     
     var scaleUpdatePublisher: AnyPublisher<OccuranceGraphScale, Never> {
-        
         document.$activeSignalSet.flatMap { signalSet in
             signalSet.newInstancePublisher.map { _ in () }
         }

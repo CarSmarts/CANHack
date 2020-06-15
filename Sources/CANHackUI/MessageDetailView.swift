@@ -11,13 +11,6 @@ import SmartCarUI
 import CANHack
 
 struct MessageDetailView: View {
-    public init(stats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
-        self.stats = stats
-        self._decoder = decoder
-                
-        self.selection.signals = self.decoder.signals
-    }
-
     @ObservedObject public var stats: GroupedStat<Message, MessageID>
     
     @Binding var decoder: DecoderMessage {
@@ -55,44 +48,44 @@ struct MessageDetailView: View {
         
         return ScrollView {
             Group {
-                Group {
+                VStack {
                     MessageIDView(id: stats.group, decoder: $decoder, canEdit: true)
                         
                     OccuranceGraph(data: stats, scale: .constant(stats.scale))
                         .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
-                    }
+                }.padding()
 
-                    HStack {
-                        BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.$selection)
-                        
-                        VStack(alignment: .center) {
-                            if selection.focusedSignalIdx == nil {
-                                Button(action: self.createSignal) {
-                                    Image(systemName: "plus.square")
-                                }
-                                .disabled(!selection.isActive)
-                            } else {
-                                Button(action: self.eraseSignal) {
-                                    Image(systemName: "minus.square")
-                                }
+                HStack {
+                    BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.$selection)
+                    
+                    VStack(alignment: .center) {
+                        if selection.focusedSignalIdx == nil {
+                            Button(action: self.createSignal) {
+                                Image(systemName: "plus.square")
+                            }
+                            .disabled(!selection.isActive)
+                        } else {
+                            Button(action: self.eraseSignal) {
+                                Image(systemName: "minus.square")
                             }
                         }
-                        .buttonStyle(BorderlessButtonStyle())
                     }
-                }.layoutPriority(1.0)
-                
-                Enumerating(decoder.signals) { (signal, idx) in
-                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: .color(for: idx))
+                    .buttonStyle(BorderlessButtonStyle())
                 }
-                
-                Spacer()
+            }.layoutPriority(1.0)
+            
+            Enumerating(decoder.signals) { (signal, idx) in
+                DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: .color(for: idx))
             }
-            .padding()
-            .onAppear {
-                if let first = stats.firstInstance {
-                    self.activeSignal = first
-                }
+            
+            Spacer()
+        }
+        .onAppear {
+            if let first = stats.firstInstance {
+                self.activeSignal = first
             }
+            self.selection.signals = self.decoder.signals
+        }
     }
 }
 
