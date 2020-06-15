@@ -238,7 +238,7 @@ public class MockMessageSetDocument: MessageSetDocument {
     public init() {
         super.init(fileURL: AppFolder.tmp.baseURL.appendingPathComponent("testSet"))
     
-        activeSignalSet = Mock.testSet
+        signalSet = Mock.testSet
     }
     
     public override func contents(forType typeName: String) throws -> Any {

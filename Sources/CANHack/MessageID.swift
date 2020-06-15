@@ -12,11 +12,7 @@ public struct MessageID : Signal, ExpressibleByIntegerLiteral {
     public typealias RawValue = UInt32
     
     public var rawValue: UInt32
-    
-    public var id: RawValue {
-        rawValue
-    }
-    
+        
     public init(integerLiteral value: IntegerLiteralType) {
         self.rawValue = UInt32(value)
     }
@@ -50,6 +46,12 @@ public extension MessageID {
         try container.encode(hex)
     }
     
+}
+
+extension MessageID: Identifiable {
+    public var id: RawValue {
+        rawValue
+    }
 }
 
 public extension MessageID {

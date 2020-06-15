@@ -9,43 +9,44 @@ import UIKit
 import CANHack
 
 public class MessageSetDocument: UIDocument, ObservableObject {
-    @Published public var activeSignalSet = SignalSet<Message>() {
+    @Published public var signalSet = SignalSet<Message>() {
         didSet {
 //            super.updateChangeCount(.done)
+            self.groupedById = signalSet.groupedById
         }
     }
     
-    @Published public var loading = false
-    
+    public private(set) var groupedById = SignalSet<Message>().groupedById
+        
     func printState() {
         print("MessageSet: \(localizedName) ", terminator: "")
         if documentState.contains(.closed) {
-            print("closed ")
+            print("closed ", terminator: "")
         }
         if documentState.contains(.editingDisabled) {
-            print("editingDisabled ")
+            print("editingDisabled ", terminator: "")
         }
         if documentState.contains(.inConflict) {
-            print("inConflict ")
+            print("inConflict ", terminator: "")
         }
         if documentState.contains(.progressAvailable) {
-            print("progressAvailable ")
+            print("progressAvailable ", terminator: "")
         }
         if documentState.contains(.savingError) {
-            print("savingError ")
+            print("savingError ", terminator: "")
         }
         if documentState.contains(.normal) {
-            print("normal ")
+            print("normal ", terminator: "")
         }
-        print(documentState)
+        print()
     }
 
     private var parser = GVRetParser()
-    private var loadingQueue: OperationQueue
+    private var parsingQueue: OperationQueue
 
     public override init(fileURL url: URL) {
-        loadingQueue = OperationQueue()
-        loadingQueue.qualityOfService = .userInitiated
+        parsingQueue = OperationQueue()
+        parsingQueue.qualityOfService = .userInitiated
         
         super.init(fileURL: url)
                     
@@ -53,43 +54,33 @@ public class MessageSetDocument: UIDocument, ObservableObject {
             self.printState()
         }
     }
-    
-    public class UnimplementedError: NSError {
-        init() {
-            super.init(domain: "CS", code: 2, userInfo: nil)
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-        }
-    }
-
-    public class ParseError: NSError {
-        init() {
-            super.init(domain: "CS", code: 1, userInfo: nil)
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-        }
-    }
-        
+            
     public override func contents(forType typeName: String) throws -> Any {
         return Data()
     }
     
     public override func read(from url: URL) throws {
-        loading = true
-        do {
-            try parser.parse(url: url, queue: loadingQueue) { loadedSet in
-                DispatchQueue.main.async {
-                    self.loading = false
-                    self.activeSignalSet = loadedSet
-                }
+        let string = try String(contentsOf: url, encoding: .utf8)
+
+        parsingQueue.addOperation {
+            let loadedSet = self.parser.parse(from: string, queue: self.parsingQueue)
+
+            DispatchQueue.main.async {
+                self.signalSet = loadedSet
             }
-        } catch {
-            loading = false
-            throw error
         }
     }
+    
+//    public override func read(from url: URL) throws {
+//        loading = true
+//        do {
+//            let string = try String(contentsOf: url, encoding: .utf8)
+//
+//            let loadedSet = parser.parse(from: string, queue: parsingQueue)
+//            DispatchQueue.main.async {
+//                self.loading = false
+//                self.signalSet = loadedSet
+//            }
+//        }
+//    }
 }

@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 /// Super vague, but a `Signal` is anything that could be associated with "happening" at a certain time
-public protocol Signal: Hashable, CustomStringConvertible, Comparable, Codable, Identifiable { }
+public protocol Signal: Hashable, CustomStringConvertible, Comparable, Codable { }
 
 /// When a `Signal` "happened"
 public typealias Timestamp = Int

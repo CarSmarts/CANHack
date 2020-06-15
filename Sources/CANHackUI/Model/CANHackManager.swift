@@ -19,17 +19,7 @@ public class CANHackManager: ObservableObject {
             self.decoderDocument.decoder = newValue
         }
     }
-    
-    public var activeMessageSet: Binding<SignalSet<Message>?> {
-        return Binding(get: {
-            self.messageSetDocument?.activeSignalSet
-        }) { (newValue) in
-            if let newValue = newValue, let doc = self.messageSetDocument {
-                doc.activeSignalSet = newValue
-            }
-        }
-    }
-    
+        
     public private(set) var decoderDocument: CarDecoderDocument!
     public private(set) var messageSetDocument: MessageSetDocument?
     

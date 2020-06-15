@@ -66,10 +66,8 @@ public extension Parser {
         return SignalSet<S>(signalInstances: parsed)
     }
         
-    func parse(url: URL, queue: OperationQueue, callback: @escaping (SignalSet<S>) -> Void) throws {
+    func parse(from string: String, queue: OperationQueue) -> SignalSet<S> {
         let maxLoad = 1_000_000
-
-        let string = try String(contentsOf: url, encoding: .utf8)
         
         let lines = string.components(separatedBy: .newlines).prefix(maxLoad)
         let batchSize = lines.count / 6
@@ -83,11 +81,10 @@ public extension Parser {
 //        let clumpSize = 10
 //        var idx = 15
 
-        let buildSet = SignalSet<S>(signalInstances: instances)
+        return SignalSet<S>(signalInstances: instances)
         
 //        let buildSet = SignalSet<S>(signalInstances: Array(instances.prefix(idx)))
 //
-        callback(buildSet)
 //
 //        let timer = DispatchSource.makeTimerSource()
 //
