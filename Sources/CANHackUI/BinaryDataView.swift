@@ -153,7 +153,7 @@ public struct DigitCell: View {
             .modifier(Monospaced())
         }
         .frame(width: 30, height: 30, alignment: .center)
-        .border(Color.black, width: 1)
+        .border(Color.primary, width: 1)
         .background(selectionColor)
     }
 }

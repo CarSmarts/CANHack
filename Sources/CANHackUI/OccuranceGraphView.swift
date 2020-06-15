@@ -66,19 +66,17 @@ struct OccuranceGraphRow: View {
     ]
     
     var color: Color {
-        let hash = Int(colorChoice.hashValue.magnitude)
-        
-        return colors[hash % colors.count]
+        return colors[colorChoice % colors.count]
     }
     
-    public var colorChoice: AnyHashable = AnyHashable(0)
+    public var colorChoice: Int = 0
     
     var body: some View {
         GeometryReader { geometry in
             Path { path in
                 let scale = self.scale
                 
-                var lastPosition: CGFloat = 0.0
+                var lastPosition: CGFloat = -100.0
                 let height = geometry.size.height
                 let width = geometry.size.width
 
@@ -104,7 +102,6 @@ struct ScrubView: View {
     var scale: OccuranceGraphScale
     
     @Binding public var activeSignal: SignalInstance<Message>
-    
     
     func findActiveSignal(in list: SignalList<Message>, target: Timestamp) -> SignalInstance<Message> {
         guard list.count > 0 else {
@@ -198,14 +195,14 @@ struct OccuranceGraph: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             VStack(alignment: .leading, spacing: 2) {
-                ForEach(self.shortList, id: \.signal) { signalStat in
+                Enumerating(self.shortList) { signalStat, idx in
                     Text(signalStat.signal.contentDescription)
                     .modifier(Monospaced())
                     .padding(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: 27.0)
                     .background(
-                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.scale, colorChoice: AnyHashable(signalStat.signal))
+                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.scale, colorChoice: idx)
                     )
                 }
             }

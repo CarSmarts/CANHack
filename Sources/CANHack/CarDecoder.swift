@@ -118,5 +118,16 @@ public struct DecoderSignal: Codable, Equatable {
     public var unit: String
 
     public var recivingNode: DecoderNode
+        
+    public var valueTable: [DecoderValue] = []
 }
 
+public struct DecoderValue: Codable, Equatable {
+    public init(value: Int = 0, label: String = "") {
+        self.value = value
+        self.label = label
+    }
+    
+    public var value: Int
+    public var label: String
+}

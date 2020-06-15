@@ -6,16 +6,15 @@
 //
 
 import SwiftUI
-
 import CANHack
 
 public extension View {
     func flipEffect(_ flipped: Bool) -> some View {
-        return modifier(_ScaleEffect(transform: flipped ? -1.0 : 1.0))
+        return modifier(_VerticalScaleEffect(transform: flipped ? -1.0 : 1.0))
     }
 }
 
-struct _ScaleEffect: GeometryEffect {
+struct _VerticalScaleEffect: GeometryEffect {
     var transform: CGFloat
     
     var animatableData: CGFloat {
@@ -30,74 +29,139 @@ struct _ScaleEffect: GeometryEffect {
     }
 }
 
-struct ConversionView: View {
-    @Binding var conversion: DecoderSignal.Conversion
-    @State var expanded: Bool = false
+struct ExpandingView<Content: View>: View {
+    @State private var expanded: Bool = false
+
+    public init(_ name: String, @ViewBuilder content: () -> Content) {
+        self.name = name
+        self.content = content()
+    }
     
-    var body: some View {
-        return VStack(alignment: .leading) {
+    private let name: String
+    private let content: Content
+
+    public var body: some View {
+        VStack(alignment: .leading) {
             HStack {
-                Text("Conversion").font(.headline)
-                Spacer()
                 Button(action: {
                     withAnimation {
                         self.expanded.toggle()
                     }
                 }) {
+                    Text(name).font(.headline).accentColor(.primary)
+                    Spacer()
+
                     Image(systemName: "chevron.down")
                         .flipEffect(expanded)
 
                 }.buttonStyle(BorderlessButtonStyle())
             }
             if expanded {
-                VStack {
-                    Stepper(value: $conversion.factor, step: 0.01) {
-                        Text("Factor: \(conversion.factor, specifier: "%.2f")")
-                    }
-                    Stepper(value: $conversion.offset, step: 1) {
-                        Text("Offset: \(conversion.offset)")
-                    }
-                    HStack {
-                        Stepper(value: $conversion.min, step: 1) {
-                            Text("min: \(conversion.min)")
-                        }
-                        Stepper(value: $conversion.max, step: 1) {
-                            Text("max: \(conversion.max)")
-                        }
-                    }
-                    }.transition(AnyTransition.move(edge: .top).combined(with: AnyTransition.opacity))
+                content.transition(AnyTransition.move(edge: .top).combined(with: AnyTransition.opacity))
+            }
+        }
+    }
+}
+
+struct ConversionView: View {
+    @Binding var conversion: DecoderSignal.Conversion
+    
+    private var doubleFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        
+        return formatter
+    }
+    
+    private var intFormater: NumberFormatter {
+        let formatter = NumberFormatter()
+        
+        return formatter
+    }
+
+    
+    var body: some View {
+        VStack {
+            
+            Stepper(value: $conversion.factor, step: 0.01) {
+                Text("Factor:")
+                
+                TextField("Factor", value: $conversion.factor, formatter: doubleFormatter)
+            }
+            
+            Stepper(value: $conversion.offset, step: 1) {
+                Text("Factor:")
+                
+                TextField("Offset", value: $conversion.offset, formatter: intFormater)
+            }
+            
+            HStack {
+                Text("Min: ")
+                TextField("Min", value: $conversion.min, formatter: doubleFormatter)
+            
+                Text("Max: ")
+                TextField("Max", value: $conversion.max, formatter: doubleFormatter)
             }
         }
     }
 }
 
 struct DecoderSignalView: View {
+    internal init(decoderSignal: Binding<DecoderSignal>, selected: Binding<Bool> = .constant(false), index: Int, highlightColor: Color) {
+        self._decoderSignal = decoderSignal
+        self._selected = selected
+        
+        self.index = index
+        self.highlightColor = highlightColor
+    }
+    
     @Binding var decoderSignal: DecoderSignal
+    @Binding var selected: Bool
     let index: Int
     let highlightColor: Color
     
+    var summaryView: some View {
+        let rectangle = RoundedRectangle(cornerRadius: 7.0, style: .continuous)
+        
+        let selectionOverlay = rectangle.stroke(lineWidth: selected ? 3.0 : 0.0)
+        
+        return Text("\(decoderSignal.location.startBit): \(decoderSignal.location.len)")
+        .padding(9.0)
+            .background(highlightColor.clipShape(rectangle))
+        .overlay(selectionOverlay)
+        .onTapGesture {
+            self.selected.toggle()
+        }
+    }
+
     var body: some View {
         VStack {
             HStack {
-                Text("\(decoderSignal.location.startBit): \(decoderSignal.location.len)")
-                    .padding(5.0)
-                    .background(highlightColor.clipShape(RoundedRectangle(cornerRadius: 7.0)))
+                summaryView
                 
                 TextField("Name", text: $decoderSignal.name)
                 TextField("Reciver", text: $decoderSignal.recivingNode)
             }
             
-            ConversionView(conversion: $decoderSignal.conversion)
+            ExpandingView("Conversion") {
+                ConversionView(conversion: $decoderSignal.conversion)
+            }
+            
+            ExpandingView("Value table") {
+                ValueTableView(valueTable: $decoderSignal.valueTable)
+            }
         }.padding()
     }
 }
 
 struct DecoderSignalView_Previews: PreviewProvider {
     struct MockView: View {
+        @State var selected: Bool = false
         @State var decoderSignal = DecoderSignal(name: "", location: .init(startBit: 0, len: 3), conversion: .init(factor: 0, offset: 0, min: 0, max: 0), unit: "unit", recivingNode: "someNode")
         
         var body: some View {
-            DecoderSignalView(decoderSignal: $decoderSignal, index: 0, highlightColor: .blue)
+            DecoderSignalView(decoderSignal: $decoderSignal, selected: $selected, index: 0, highlightColor: .blue)
         }
     }
     

@@ -44,7 +44,7 @@ struct MessageIDView: View {
             } else {
                 Text(decoder.name)
                     .font(.subheadline)
-                
+                Spacer()
                 Text(decoder.sendingNode)
                     .frame(width: 70.0)
                     .font(.subheadline)

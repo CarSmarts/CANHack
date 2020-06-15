@@ -32,6 +32,7 @@
 		738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738454902480B9AD00D1C94E /* BinaryDataView.swift */; };
 		7386AFC52491AC4E005274A4 /* DecoderSignalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386AFC32491AC22005274A4 /* DecoderSignalView.swift */; };
 		73904659249012D10068F78A /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
+		73D2A1502496F67400E778B1 /* ValueTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D2A14E2496D95000E778B1 /* ValueTableView.swift */; };
 		OBJ_41 /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Byte.swift */; };
 		OBJ_42 /* GVRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* GVRET.swift */; };
 		OBJ_43 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Message.swift */; };
@@ -92,6 +93,7 @@
 		738454902480B9AD00D1C94E /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDataView.swift; sourceTree = "<group>"; };
 		7386AFC32491AC22005274A4 /* DecoderSignalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderSignalView.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		73D2A14E2496D95000E778B1 /* ValueTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueTableView.swift; sourceTree = "<group>"; };
 		"CANHack::CANHack::Product" /* CANHack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CANHack::CANHackTests::Product" /* CANHackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CANHackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CANHack::CANHackUI::Product" /* CANHackUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CANHackUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 				OBJ_25 /* MessageStatView.swift */,
 				7358E4042490508600013620 /* MessageDetailView.swift */,
 				7386AFC32491AC22005274A4 /* DecoderSignalView.swift */,
+				73D2A14E2496D95000E778B1 /* ValueTableView.swift */,
 				OBJ_26 /* OccuranceGraphView.swift */,
 				738454902480B9AD00D1C94E /* BinaryDataView.swift */,
 				730A8053247DE83E009E00A5 /* Model */,
@@ -425,6 +428,7 @@
 				730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */,
 				73904659249012D10068F78A /* Mock.swift in Sources */,
 				7358E4062490520200013620 /* MessageDetailView.swift in Sources */,
+				73D2A1502496F67400E778B1 /* ValueTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

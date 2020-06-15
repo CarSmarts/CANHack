@@ -17,11 +17,6 @@ struct MessageDetailView: View {
                 
         self.selection = Selection(numRows: 1, numColumns: 8)
         self.selection.signals = self.decoder.signals
-        
-        if let first = stats.firstInstance {
-            self.activeSignal = first
-            self.selection.numRows = first.signal.contents.count
-        }
     }
 
     @ObservedObject public var stats: GroupedStat<Message, MessageID>
@@ -53,6 +48,18 @@ struct MessageDetailView: View {
         decoder.signals.append(DecoderSignal(name: "", location: .init(startBit: startBit, len: len), conversion: DecoderSignal.Conversion(), unit: "", recivingNode: ""))
     }
     
+    private func selectionBinding(for idx: Int) -> Binding<Bool> {
+        return Binding(get: {
+            self.selection.activeDecoderSignal == self.decoder.signals[idx]
+        }) { (selected) in
+            if selected {
+                self.selection.setActiveSignal(idx)
+            } else {
+                self.selection.isActive = false
+            }
+        }
+    }
+    
     public var body: some View {
         let stats = self.stats
         
@@ -63,6 +70,12 @@ struct MessageDetailView: View {
                         
                     OccuranceGraph(data: stats, scale: .constant(stats.scale))
                         .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
+                        .onAppear {
+                            if let first = stats.firstInstance {
+                                self.activeSignal = first
+                                self.selection.numRows = first.signal.contents.count
+                            }
+                    }
 
                     HStack {
                         BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)
@@ -84,8 +97,7 @@ struct MessageDetailView: View {
                 }.layoutPriority(1.0)
                 
                 Enumerating(decoder.signals) { (signal, idx) in
-                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], index: idx, highlightColor: self.selection.color(forSignal: idx))
-                        .background(self.selection.activeDecoderSignal == signal ? Color.secondary.opacity(0.80) : Color.clear)
+                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: self.selection.color(forSignal: idx))
                         .onTapGesture {
                             self.selection.setActiveSignal(idx)
                     }
