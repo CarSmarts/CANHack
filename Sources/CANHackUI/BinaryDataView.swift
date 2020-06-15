@@ -9,34 +9,22 @@ import SwiftUI
 import CANHack
 import SmartCarUI
 
-extension CoordinateSpace {
-    static var dataView: CoordinateSpace {
-        let key: String = "dataView"
-        
-        return .named(key)
-    }
-}
-
 struct Index: Comparable {
-    static func < (lhs: Index, rhs: Index) -> Bool {
-        if lhs.row == rhs.row {
-            return lhs.column < rhs.column
-        } else {
-            return lhs.row < rhs.row
-        }
-    }
-    
     internal init(_ row: Int, _ column: Int) {
         self.row = row
         self.column = column
     }
     
+    var row: Int
+    var column: Int
+    
     var finalIndexPosition: Int {
         return column + row * 8
     }
     
-    var row: Int
-    var column: Int
+    static func < (lhs: Index, rhs: Index) -> Bool {
+        lhs.finalIndexPosition < rhs.finalIndexPosition
+    }
 }
 
 extension DecoderSignal.Location {
@@ -45,102 +33,80 @@ extension DecoderSignal.Location {
     }
 }
 
-class Selection: ObservableObject {
-    internal init(numRows: Int, numColumns: Int) {
-        self.numRows = numRows
-        self.numColumns = numColumns
+extension Color {
+    static func color(for idx: Int) -> Color {
+        let colors = [
+            Color.blue,
+            Color.green,
+            Color.purple,
+            Color.red,
+            Color.orange,
+        ]
+        
+        return colors[idx % colors.count]
+    }
+}
+
+struct Selection {
+    var startIndex = Index(0, 0)
+    var endIndex = Index(0, 0)
+    
+    var isActive = false
+
+    func isSelected(_ index: Index) -> Bool {
+        return isActive && selectedRange.contains(index)
+    }
+    
+    var signals: [DecoderSignal] = []
+
+    var focusedSignalIdx: Int?
+    var focusedDecoderSignal: DecoderSignal? {
+        guard let activeIdx = focusedSignalIdx else {
+            return nil
+        }
+        
+        return signals[activeIdx]
     }
         
-    @Published var signals: [DecoderSignal] = []
-
-    let colors = [
-        Color.blue,
-        Color.green,
-        Color.purple,
-        Color.red,
-        Color.orange,
-    ]
-        
-    var numRows: Int
-    var numColumns: Int
-    @Published var startIndex: Index = Index(0, 0)
-    @Published var endIndex: Index = Index(0, 0)
+    var location: DecoderSignal.Location {
+        let start = selectedRange.lowerBound.finalIndexPosition
+        let len = selectedRange.upperBound.finalIndexPosition - start + 1
+            
+        return .init(startBit: start, len: len)
+    }
     
     var selectedRange: ClosedRange<Index> {
         return min(startIndex, endIndex)...max(startIndex, endIndex)
     }
     
-    var start: Int {
-        return selectedRange.lowerBound.finalIndexPosition
-    }
-
-    var len: Int {
-        return selectedRange.upperBound.finalIndexPosition - start + 1
-    }
-    
-    func setActiveSignal(_ idx: Int) {
-        if activeDecoderSignal == signals[idx] {
-            isActive = false
-        } else {
-            isActive = true
+    func signal(at index: Index) -> (Int, DecoderSignal)? {
+        signals.enumerated().first { pair in
+            pair.element.location.range.contains(index.finalIndexPosition)
         }
-        
-        let start = signals[idx].location.startBit
-        
-        let index = Index(start / 8, start % 8)
-        startIndex = index
-        endIndex = index
     }
     
-    private func signalIntersects(_ signal: DecoderSignal, _ index: Index) -> Bool {
-        return signal.location.range.contains(index.finalIndexPosition)
-    }
-    
-    private func signalIntersects(_ signal: DecoderSignal, _ range: ClosedRange<Index>) -> Bool {
-        let mappedRange = range.lowerBound.finalIndexPosition...range.upperBound.finalIndexPosition
-        
-        return signal.location.range.overlaps(mappedRange)
-    }
-    
-    public func color(forSignal idx: Int) -> Color {
-        return colors[idx % colors.count]
-    }
-
     func color(for index: Index) -> Color {
-        if activeDecoderSignal == nil && isSelected(index) {
+        if isSelected(index) {
             return Color.pink.opacity(0.75)
         }
-        
-        for (idx, signal) in signals.enumerated() {
-            if signalIntersects(signal, index) {
-                if let activeDecoderSignal = activeDecoderSignal, activeDecoderSignal == signal {
-                    return color(forSignal: idx).opacity(0.90)
-                } else {
-                    return color(forSignal: idx).opacity(0.75)
-                }
+
+        if let (idx, _) = signal(at: index) {
+            if idx == focusedSignalIdx {
+                return Color.color(for: idx).opacity(0.90)
+            } else {
+                return Color.color(for: idx).opacity(0.75)
             }
         }
-        
+                
         return .clear
     }
     
-    @Published var isActive = false
-        
-    func isSelected(_ index: Index) -> Bool {
-        return isActive && selectedRange.contains(index)
-    }
-    
-    var activeDecoderSignal: DecoderSignal? {
-        guard isActive else { return nil }
-        
-        return signals.first(where: { signalIntersects($0, selectedRange)})
-    }
 }
 
 
 public struct DigitCell: View {
     public var digit: Bool
-    @ObservedObject var selection: Selection
+    var selection: Selection
     var index: Index
     
     var selectionColor: Color {
@@ -153,7 +119,7 @@ public struct DigitCell: View {
             .modifier(Monospaced())
         }
         .frame(width: 30, height: 30, alignment: .center)
-        .border(Color.primary, width: 1)
+        .border(Color.black, width: 1)
         .background(selectionColor)
     }
 }
@@ -161,7 +127,7 @@ public struct DigitCell: View {
 public struct BinaryDataRow: View {
     var byte: Byte
     var rowIndex: Int
-    @ObservedObject var selection: Selection
+    var selection: Selection
     
     var reversedBits: [(Int, Bool)] {
         Array(byte.bits.enumerated()).reversed()
@@ -182,17 +148,33 @@ public struct BinaryDataRow: View {
 public struct BinaryDataCellsView: View {
     var message: Message
     @Binding var decoder: DecoderMessage
-    @ObservedObject var selection: Selection
+    @Binding var selection: Selection
 
     func hitTest(geoProxy: GeometryProxy, location: CGPoint) -> Index {
+        let numRows = message.contents.count
+        let numColumns = 8
 
         let xPercent = location.x / geoProxy.size.width
         let yPercent = location.y / geoProxy.size.height
         
-        let row = Int(CGFloat(selection.numRows) * yPercent)
-        let col = Int(CGFloat(selection.numColumns) * (1 - xPercent))
+        let row = Int(CGFloat(numRows) * yPercent)
+        let col = Int(CGFloat(numColumns) * (1 - xPercent))
         
         return Index(row, col)
+    }
+    
+    func handleDrag(_ value: DragGesture.Value, geoProxy: GeometryProxy) {
+        let startIndex = hitTest(geoProxy: geoProxy, location: value.startLocation)
+        
+        if let (idx, _) = selection.signal(at: startIndex) {
+            selection.isActive = false
+            selection.focusedSignalIdx = idx
+        } else {
+            selection.isActive = true
+            selection.focusedSignalIdx = nil
+            selection.startIndex = startIndex
+            selection.endIndex = hitTest(geoProxy: geoProxy, location: value.location)
+        }
     }
     
     public var body: some View {
@@ -208,52 +190,39 @@ public struct BinaryDataCellsView: View {
                             .modifier(Monospaced())
                         }
                         .padding(.bottom, 5.0)
-
                     }
                 }
-                .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .dataView)
-                .onChanged({ value in
-                    self.selection.isActive = true
-                    self.selection.startIndex = self.hitTest(geoProxy: geo, location: value.startLocation)
-                    self.selection.endIndex = self.hitTest(geoProxy: geo, location: value.location)
-                }))
-            }.frame(width: 30 * 8 + 5.0, height: 35.0 * CGFloat(self.message.contents.count), alignment: .topLeading)
+                .gesture(
+                    DragGesture(minimumDistance: 0.0)
+                        .onChanged { self.handleDrag($0, geoProxy: geo) }
+                )
+            }
+            .frame(width: 30 * 8 + 5.0, height: 35.0 * CGFloat(self.message.contents.count), alignment: .topLeading)
             
             VStack(alignment: .leading, spacing: -0.5) {
-                ForEach(Array(self.message.contents.enumerated()), id: \.0) { row in
-                        Text(row.element.hex)
+                Enumerating(self.message.contents) { (message, _) in
+                    Text(message.hex)
                         .fontWeight(.light)
                         .modifier(Monospaced())
-                        .frame(width: nil, height: 30.0, alignment: .center)
+                        .frame(height: 30.0)
                         .padding(.bottom, 5.0)
+
                 }
             }
         }
     }
 }
 
-//extension GroupedSignalSet {
-//    public var scale: OccuranceGraphScale {
-//        var scale = _signalSet.scale
-//        scale.count = groups.count
-//        return scale
-//    }
-//}
-
 struct BinaryDataView_Previews: PreviewProvider {
     struct BinaryDataPreview: View {
-        internal init(message: Message) {
-            self.message = message
-            self.selection = Selection(numRows: message.contents.count, numColumns: 8)
-        }
         
         @State var decoderMessage = Mock.decoderMessage
         
         var message: Message
-        var selection: Selection
+        @State var selection = Selection()
         
         var body: some View {
-            BinaryDataCellsView(message: message, decoder: $decoderMessage, selection: selection)
+            BinaryDataCellsView(message: message, decoder: $decoderMessage, selection: $selection)
         }
     }
     

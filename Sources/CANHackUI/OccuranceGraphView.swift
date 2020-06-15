@@ -122,7 +122,7 @@ struct ScrubView: View {
         }
     }
     
-    func hitTest(location: CGPoint, size: CGSize) {
+    func hitTest(location: CGPoint, size: CGSize) {        
         let hoveredStatIndex = Int((location.y / size.height) * CGFloat(data.stats.count))
         
         let hoveredStatSignalList = data.stats[clamping: hoveredStatIndex].signalList

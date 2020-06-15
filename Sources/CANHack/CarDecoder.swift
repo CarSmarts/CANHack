@@ -60,7 +60,7 @@ public struct DecoderMessage: Codable {
 }
 
 public struct DecoderSignal: Codable, Equatable {
-    public init(name: String, location: DecoderSignal.Location, conversion: DecoderSignal.Conversion, unit: String, recivingNode: DecoderNode) {
+    public init(name: String = "", location: Location, conversion: Conversion = .init(), unit: String = "", recivingNode: DecoderNode = "") {
         self.name = name
         self.location = location
         self.conversion = conversion
@@ -79,7 +79,6 @@ public struct DecoderSignal: Codable, Equatable {
             
             littleEndian = try values.decode(Bool.self, forKey: .littleEndian)
             signed = try values.decode(Bool.self, forKey: .signed)
-
         }
 
         public init(startBit: Int, len: Int, littleEndian: Bool = false, signed: Bool = false) {

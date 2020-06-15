@@ -15,7 +15,6 @@ struct MessageDetailView: View {
         self.stats = stats
         self._decoder = decoder
                 
-        self.selection = Selection(numRows: 1, numColumns: 8)
         self.selection.signals = self.decoder.signals
     }
 
@@ -27,36 +26,27 @@ struct MessageDetailView: View {
         }
     }
         
-    @ObservedObject private var selection: Selection
+    @State private var selection = Selection()
     @State var activeSignal: SignalInstance<Message> = Mock.signalInstance
     
     fileprivate func eraseSignal() {
-        let activeSignal = selection.activeDecoderSignal!
         selection.isActive = false
-
-        decoder.signals.removeAll { decoderSignal in
-            decoderSignal == activeSignal
-        }
+        decoder.signals.remove(at: selection.focusedSignalIdx!)
+        selection.focusedSignalIdx = nil
     }
     
     fileprivate func createSignal() {
         selection.isActive = false
-        
-        let startBit = selection.start
-        let len = selection.len
-
-        decoder.signals.append(DecoderSignal(name: "", location: .init(startBit: startBit, len: len), conversion: DecoderSignal.Conversion(), unit: "", recivingNode: ""))
+        selection.focusedSignalIdx = decoder.signals.count
+        decoder.signals.append(DecoderSignal(location: selection.location))
     }
     
     private func selectionBinding(for idx: Int) -> Binding<Bool> {
         return Binding(get: {
-            self.selection.activeDecoderSignal == self.decoder.signals[idx]
+            self.selection.focusedSignalIdx == idx
         }) { (selected) in
-            if selected {
-                self.selection.setActiveSignal(idx)
-            } else {
-                self.selection.isActive = false
-            }
+            self.selection.isActive = false
+            self.selection.focusedSignalIdx = selected ? idx : nil
         }
     }
     
@@ -70,18 +60,13 @@ struct MessageDetailView: View {
                         
                     OccuranceGraph(data: stats, scale: .constant(stats.scale))
                         .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
-                        .onAppear {
-                            if let first = stats.firstInstance {
-                                self.activeSignal = first
-                                self.selection.numRows = first.signal.contents.count
-                            }
                     }
 
                     HStack {
-                        BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.selection)
+                        BinaryDataCellsView(message: activeSignal.signal, decoder: self.$decoder, selection: self.$selection)
                         
                         VStack(alignment: .center) {
-                            if selection.activeDecoderSignal == nil {
+                            if selection.focusedSignalIdx == nil {
                                 Button(action: self.createSignal) {
                                     Image(systemName: "plus.square")
                                 }
@@ -97,15 +82,17 @@ struct MessageDetailView: View {
                 }.layoutPriority(1.0)
                 
                 Enumerating(decoder.signals) { (signal, idx) in
-                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: self.selection.color(forSignal: idx))
-                        .onTapGesture {
-                            self.selection.setActiveSignal(idx)
-                    }
+                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: .color(for: idx))
                 }
                 
                 Spacer()
-            }.padding()
-        }
+            }
+            .padding()
+            .onAppear {
+                if let first = stats.firstInstance {
+                    self.activeSignal = first
+                }
+            }
     }
 }
 
