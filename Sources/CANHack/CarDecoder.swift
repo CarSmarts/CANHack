@@ -60,12 +60,13 @@ public struct DecoderMessage: Codable {
 }
 
 public struct DecoderSignal: Codable, Equatable {
-    public init(name: String = "", location: Location, conversion: Conversion = .init(), unit: String = "", recivingNode: DecoderNode = "") {
+    public init(name: String = "", location: Location, conversion: Conversion = .init(), unit: String = "", recivingNode: DecoderNode = "", valueTable: [DecoderValue] = []) {
         self.name = name
         self.location = location
         self.conversion = conversion
         self.unit = unit
         self.recivingNode = recivingNode
+        self.valueTable = valueTable
     }
     
     public var name: String
@@ -121,9 +122,19 @@ public struct DecoderSignal: Codable, Equatable {
     public var valueTable: [DecoderValue] = []
 }
 
+public extension DecoderSignal {
+    func decodeRawValue(_ message: Message) -> UInt64 {
+        return location.decodeRawValue(message.contents)
+    }
+    
+    func decodeTabelValue(_ message: Message) -> String? {
+        let value = decodeRawValue(message)
+        return valueTable.first(where: { $0.value == UInt64(value) }).map { $0.label }
+    }
+}
+
 public extension DecoderSignal.Location {
     func decodeRawValue(_ data: [Byte]) -> UInt64 {
-                
         var result = data.mergeBytes
                 
         result = (result << (64 - len - startBit)) >> (64 - len)

@@ -8,8 +8,27 @@
 
 import Combine
 import SwiftUI
+import SmartCarUI
 import CANHack
 import AppFolder
+
+public struct DecodedValueView: View {
+    let message: Message
+    let decoderSignal: DecoderSignal
+    
+    public var body: some View {
+        HStack {
+            Text(decoderSignal.name).padding(5.0)
+            Spacer()
+            Text("\(decoderSignal.decodeRawValue(message), specifier: "%x")")
+                .modifier(Monospaced())
+            
+            Unwrap(decoderSignal.decodeTabelValue(message)) { label in
+                Text(label)
+            }
+        }
+    }
+}
 
 public struct MessageStatView: View {
     public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
@@ -25,6 +44,12 @@ public struct MessageStatView: View {
             MessageIDView(id: groupStats.group, decoder: $decoder)
             
             AdaptiveGraphView(groupStats: groupStats)
+            
+            Unwrap(self.groupStats.lastInstance?.signal) { signal in
+                Enumerating(self.decoder.signals) { (decoderSignal: DecoderSignal, idx) in
+                    DecodedValueView(message: signal, decoderSignal: decoderSignal)
+                }
+            }
         }
     }
 }
@@ -66,7 +91,7 @@ public struct GroupedByIdView: View {
 
 struct MessageSetView_Previews: PreviewProvider {
     static var doc = MockMessageSetDocument()
-        
+    
     static var previews: some View {
         MessageSetView(document: doc, decoder: .constant(Mock.decoder))
     }

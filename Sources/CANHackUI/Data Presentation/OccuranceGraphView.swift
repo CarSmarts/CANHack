@@ -68,12 +68,12 @@ struct OccuranceGraphRow: View {
 }
 
 struct ScrubView: View {
-    
     var data: GroupedStat<Message, MessageID>
     @EnvironmentObject var scale: GraphScale<Int>
-    
     @Binding public var activeSignal: SignalInstance<Message>
     
+    var snapToStat = true
+
     func findActiveSignal(in list: SignalList<Message>, target: Timestamp) -> SignalInstance<Message> {
         guard list.count > 0 else {
             return activeSignal
@@ -92,29 +92,33 @@ struct ScrubView: View {
             return lower
         }
     }
-    
+        
     func hitTest(location: CGPoint, size: CGSize) {
-        let hoveredStatIndex = Int((location.y / size.height) * CGFloat(data.stats.count))
-        
-        let hoveredStatSignalList = data.stats[clamping: hoveredStatIndex].signalList
-        
         guard let last = data.signalList.last?.timestamp,
             let first = data.signalList.first?.timestamp, first != last else {
                 return
         }
-        
+
         // compute target timestamp from xlocation
         let range = last - first
         let target = Int((location.x / size.width) * CGFloat(range)) + first
-                
-        // first search in our hovered StatIndex
-        activeSignal = findActiveSignal(in: hoveredStatSignalList, target: target)
-        
-        let hypotheticalViewPosition = computeScrubOffset(width: size.width)
-        
-        // if we're more than five pixels away from our signal
-        if abs(hypotheticalViewPosition - location.x) > 5.0 {
-            // search again in all the signals
+
+        if snapToStat {
+            // compute hoveredStat
+            let hoveredStatIndex = Int((location.y / size.height) * CGFloat(data.stats.count))
+            let hoveredStatSignalList = data.stats[clamping: hoveredStatIndex].signalList
+                                
+            // first search in our hovered StatIndex
+            activeSignal = findActiveSignal(in: hoveredStatSignalList, target: target)
+            
+            let hypotheticalViewPosition = computeScrubOffset(width: size.width)
+            
+            // if we're more than five pixels away from our signal
+            if abs(hypotheticalViewPosition - location.x) > 5.0 {
+                // search again in all the signals
+                activeSignal = findActiveSignal(in: data.signalList, target: target)
+            }
+        } else {
             activeSignal = findActiveSignal(in: data.signalList, target: target)
         }
     }
@@ -139,15 +143,13 @@ struct ScrubView: View {
                     DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
                     .onChanged({ value in
                         self.hitTest(location: value.location, size: geo.size)
-                        
-                        self.offset = self.computeScrubOffset(width: geo.size.width)
                     })
                 )
             .overlay(
                 Color.red
                 .opacity(0.80)
                     .frame(width: 2.0, height: geo.size.height)
-                    .offset(x: self.offset, y: 0.0),
+                    .offset(x: self.computeScrubOffset(width: geo.size.width)),
                 alignment: Alignment(horizontal: .leading, vertical: .center)
             )
         }

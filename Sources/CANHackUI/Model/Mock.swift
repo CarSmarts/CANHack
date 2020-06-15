@@ -29,7 +29,17 @@ public struct MockHelper {
 
     public var decoder: CarDecoder = {
         let decoder = CarDecoder([
-            DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay")
+            DecoderMessage(id: 0xAF81111, name: "Relay Control Status", len: 2, sendingNode: "Relay"),
+            DecoderMessage(id: 0x12F83130, name: "Lock Status", len: 1, sendingNode: "Lock", signals: [
+                DecoderSignal(name: "Lock", location: .init(startBit: 2, len: 2), valueTable: [
+                   DecoderValue(value: 0, label: "Unlocked"),
+                   DecoderValue(value: 1, label: "Locked"),
+                   DecoderValue(value: 2, label: "Unlocked?"),
+               ]),
+                DecoderSignal(name: "Cylinder", location: .init(startBit: 6, len: 2), valueTable: [
+                    DecoderValue(value: 0, label: "Rest")
+                ]),
+            ])
         ])
         
         return decoder
