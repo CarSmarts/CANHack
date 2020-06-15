@@ -39,6 +39,14 @@ public class SignalList<S: Signal>: SortedArray<SignalInstance<S>> {
     }
 }
 
+public extension SignalList {
+    func mapSignal<T>(_ transform: (S) throws -> T) rethrows -> [(T, Timestamp)] {
+        try self.map {
+            (try transform($0.signal), $0.timestamp)
+        }
+    }
+}
+
 /// Anything that has a list of signalInstances...
 public protocol InstanceList {
     associatedtype S: Signal
@@ -73,9 +81,7 @@ extension InstanceList {
 
 /// ...and a way to be notified of insertion
 extension InstanceList {
-    public var newInstancePublisher: PassthroughSubject<SignalInstance<S>, Never> {
-        return signalList.insertPublisher
+    public var newInstancePublisher: AnyPublisher<(Self, SignalInstance<S>), Never> {
+        return signalList.insertPublisher.map { (self, $0) }.eraseToAnyPublisher()
     }
 }
-
-

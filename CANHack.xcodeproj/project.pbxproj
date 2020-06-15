@@ -29,6 +29,10 @@
 		7358E402249018F000013620 /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7358E401249018F000013620 /* SmartCarUI */; };
 		7358E4032490190F00013620 /* CarDecoderDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8044247DCF71009E00A5 /* CarDecoderDocument.swift */; };
 		7358E4062490520200013620 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7358E4042490508600013620 /* MessageDetailView.swift */; };
+		735A832D2497DAA600696782 /* SimpleGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735A832B2497DA6A00696782 /* SimpleGraphView.swift */; };
+		735A83312497E89E00696782 /* GraphHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735A832F2497E87700696782 /* GraphHelper.swift */; };
+		735A83332497F81B00696782 /* SignalGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735A83322497F81B00696782 /* SignalGraph.swift */; };
+		735A834B24980BBF00696782 /* DecoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735A83472498051D00696782 /* DecoderTests.swift */; };
 		738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738454902480B9AD00D1C94E /* BinaryDataView.swift */; };
 		7386AFC52491AC4E005274A4 /* DecoderSignalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386AFC32491AC22005274A4 /* DecoderSignalView.swift */; };
 		73904659249012D10068F78A /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFBB09247B578F005743E4 /* Mock.swift */; };
@@ -47,7 +51,7 @@
 		OBJ_69 /* CANHackUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHackUI::Product" /* CANHackUI.framework */; };
 		OBJ_70 /* CANHack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHack::Product" /* CANHack.framework */; };
 		OBJ_81 /* MessageSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* MessageSetView.swift */; };
-		OBJ_82 /* MessageStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* MessageStatView.swift */; };
+		OBJ_82 /* MessageIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* MessageIDView.swift */; };
 		OBJ_83 /* OccuranceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* OccuranceGraphView.swift */; };
 		OBJ_85 /* CANHack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CANHack::CANHack::Product" /* CANHack.framework */; };
 /* End PBXBuildFile section */
@@ -90,6 +94,11 @@
 		730A8051247DE82F009E00A5 /* CanHackUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanHackUIView.swift; sourceTree = "<group>"; };
 		730A8054247DF33C009E00A5 /* MessageSetDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetDocument.swift; sourceTree = "<group>"; };
 		7358E4042490508600013620 /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
+		735A832B2497DA6A00696782 /* SimpleGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleGraphView.swift; sourceTree = "<group>"; };
+		735A832F2497E87700696782 /* GraphHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphHelper.swift; sourceTree = "<group>"; };
+		735A83322497F81B00696782 /* SignalGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalGraph.swift; sourceTree = "<group>"; };
+		735A83472498051D00696782 /* DecoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderTests.swift; sourceTree = "<group>"; };
+		735A834924980AFC00696782 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		738454902480B9AD00D1C94E /* BinaryDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDataView.swift; sourceTree = "<group>"; };
 		7386AFC32491AC22005274A4 /* DecoderSignalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderSignalView.swift; sourceTree = "<group>"; };
 		73CFBB09247B578F005743E4 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
@@ -106,7 +115,7 @@
 		OBJ_17 /* SignalInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalInstance.swift; sourceTree = "<group>"; };
 		OBJ_18 /* SignalSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalSet.swift; sourceTree = "<group>"; };
 		OBJ_24 /* MessageSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetView.swift; sourceTree = "<group>"; };
-		OBJ_25 /* MessageStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatView.swift; sourceTree = "<group>"; };
+		OBJ_25 /* MessageIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageIDView.swift; sourceTree = "<group>"; };
 		OBJ_26 /* OccuranceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccuranceGraphView.swift; sourceTree = "<group>"; };
 		OBJ_29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		OBJ_30 /* CANHackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CANHackTests.swift; sourceTree = "<group>"; };
@@ -156,9 +165,32 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		735A832A2497DA4E00696782 /* Data Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				73D2A14E2496D95000E778B1 /* ValueTableView.swift */,
+				738454902480B9AD00D1C94E /* BinaryDataView.swift */,
+				735A832F2497E87700696782 /* GraphHelper.swift */,
+				OBJ_26 /* OccuranceGraphView.swift */,
+				735A832B2497DA6A00696782 /* SimpleGraphView.swift */,
+				735A83322497F81B00696782 /* SignalGraph.swift */,
+			);
+			path = "Data Presentation";
+			sourceTree = "<group>";
+		};
+		735A832E2497E82900696782 /* Helper Views */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_25 /* MessageIDView.swift */,
+				7386AFC32491AC22005274A4 /* DecoderSignalView.swift */,
+			);
+			path = "Helper Views";
+			sourceTree = "<group>";
+		};
 		73CFBB14247B667F005743E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				735A834924980AFC00696782 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -179,12 +211,9 @@
 			children = (
 				730A8051247DE82F009E00A5 /* CanHackUIView.swift */,
 				OBJ_24 /* MessageSetView.swift */,
-				OBJ_25 /* MessageStatView.swift */,
 				7358E4042490508600013620 /* MessageDetailView.swift */,
-				7386AFC32491AC22005274A4 /* DecoderSignalView.swift */,
-				73D2A14E2496D95000E778B1 /* ValueTableView.swift */,
-				OBJ_26 /* OccuranceGraphView.swift */,
-				738454902480B9AD00D1C94E /* BinaryDataView.swift */,
+				735A832E2497E82900696782 /* Helper Views */,
+				735A832A2497DA4E00696782 /* Data Presentation */,
 				730A8053247DE83E009E00A5 /* Model */,
 			);
 			name = CANHackUI;
@@ -204,6 +233,7 @@
 			children = (
 				OBJ_29 /* Info.plist */,
 				OBJ_30 /* CANHackTests.swift */,
+				735A83472498051D00696782 /* DecoderTests.swift */,
 			);
 			name = CANHackTests;
 			path = Tests/CANHackTests;
@@ -409,6 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				735A834B24980BBF00696782 /* DecoderTests.swift in Sources */,
 				OBJ_67 /* CANHackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,14 +451,17 @@
 				7358E4032490190F00013620 /* CarDecoderDocument.swift in Sources */,
 				738454922480B9F300D1C94E /* BinaryDataView.swift in Sources */,
 				OBJ_81 /* MessageSetView.swift in Sources */,
-				OBJ_82 /* MessageStatView.swift in Sources */,
+				OBJ_82 /* MessageIDView.swift in Sources */,
 				7386AFC52491AC4E005274A4 /* DecoderSignalView.swift in Sources */,
+				735A83332497F81B00696782 /* SignalGraph.swift in Sources */,
 				OBJ_83 /* OccuranceGraphView.swift in Sources */,
 				730A804B247DE364009E00A5 /* CANHackManager.swift in Sources */,
 				730A8052247DE82F009E00A5 /* CanHackUIView.swift in Sources */,
+				735A832D2497DAA600696782 /* SimpleGraphView.swift in Sources */,
 				730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */,
 				73904659249012D10068F78A /* Mock.swift in Sources */,
 				7358E4062490520200013620 /* MessageDetailView.swift in Sources */,
+				735A83312497E89E00696782 /* GraphHelper.swift in Sources */,
 				73D2A1502496F67400E778B1 /* ValueTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

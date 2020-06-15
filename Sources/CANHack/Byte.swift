@@ -56,3 +56,10 @@ public extension Byte {
     }
 }
 
+public extension Array where Element == Byte {
+    var mergeBytes: UInt64 {
+        return self.enumerated().reduce(into: UInt64()) { (partialResult, pair) in
+            partialResult |= UInt64(pair.element) << UInt64(pair.offset * 8)
+        }
+    }
+}

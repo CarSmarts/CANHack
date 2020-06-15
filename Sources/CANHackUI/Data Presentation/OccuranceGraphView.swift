@@ -6,17 +6,11 @@
 //  Copyright © 2017 Robert Smith. All rights reserved.
 //
 
-import UIKit
+import Combine
 import SwiftUI
 import CANHack
 import SmartCarUI
 
-/// Allow Any InstanceList to be graphed
-extension InstanceList {
-    public var scale: OccuranceGraphScale {
-        return OccuranceGraphScale(min: firstTimestamp, max: lastTimestamp)
-    }
-}
 
 extension Comparable {
     func clamped(to min: Self, max: Self) -> Self {
@@ -39,54 +33,28 @@ extension Collection {
     }
 }
 
-public struct OccuranceGraphScale {
-    public var minDifference: CGFloat = 0.75
-    
-    public var min: Int
-    public var max: Int
-    public var count: Int = 1 {
-        didSet {
-            if count > 10 {
-                count = 10
-            }
-        }
-    }
-}
-
 struct OccuranceGraphRow: View {
     public var occurances: [Int]
-    public var scale: OccuranceGraphScale
-
-    private let colors = [
-        Color.blue,
-        Color.green,
-        Color.purple,
-        Color.red,
-        Color.orange,
-    ]
-    
-    var color: Color {
-        return colors[colorChoice % colors.count]
-    }
-    
-    public var colorChoice: Int = 0
+    @EnvironmentObject var scale: GraphScale<Int>
     
     var body: some View {
         GeometryReader { geometry in
             Path { path in
-                let scale = self.scale
-                guard scale.min != scale.max else {
+                guard self.scale.range > 0 else {
                     return
                 }
-                
+                let min = self.scale.min
+                let range = self.scale.range
+                let minDifference = self.scale.minDifference
+
                 var lastPosition: CGFloat = -100.0
                 let height = geometry.size.height
                 let width = geometry.size.width
 
                 for occurance in self.occurances {
-                    let position = CGFloat(occurance - scale.min) / CGFloat(scale.max - scale.min) * width
+                    let position = CGFloat(occurance - min) / CGFloat(range) * width
                     
-                    if (position - lastPosition) > scale.minDifference {
+                    if (position - lastPosition) > minDifference {
                         path.move(to: CGPoint(x: position, y: 0))
                         path.addLine(to: CGPoint(x: position, y: height))
                         
@@ -94,7 +62,7 @@ struct OccuranceGraphRow: View {
                     }
                 }
             }
-            .stroke(self.color)
+            .stroke(Color.accentColor)
         }
     }
 }
@@ -102,7 +70,7 @@ struct OccuranceGraphRow: View {
 struct ScrubView: View {
     
     var data: GroupedStat<Message, MessageID>
-    var scale: OccuranceGraphScale
+    @EnvironmentObject var scale: GraphScale<Int>
     
     @Binding public var activeSignal: SignalInstance<Message>
     
@@ -152,9 +120,12 @@ struct ScrubView: View {
     }
     
     private func computeScrubOffset(width: CGFloat) -> CGFloat {
-        let range = scale.max - scale.min
+        guard scale.range > 0 else {
+            return 0.0
+        }
+        
         let target = activeSignal.timestamp
-        let percent = CGFloat(target - scale.min) / CGFloat(range)
+        let percent = CGFloat(target - scale.min) / CGFloat(scale.range)
         
         return (width * percent).clamped(to: 0.0, max: width)
     }
@@ -185,7 +156,6 @@ struct ScrubView: View {
 
 struct OccuranceGraph: View {
     @ObservedObject var data: GroupedStat<Message, MessageID>
-    @Binding public var scale: OccuranceGraphScale
     
     var shortList: ArraySlice<SignalStat<Message>> {
         data.stats.prefix(10)
@@ -205,7 +175,8 @@ struct OccuranceGraph: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: 27.0)
                     .background(
-                        OccuranceGraphRow(occurances: signalStat.timestamps, scale: self.scale, colorChoice: idx)
+                        OccuranceGraphRow(occurances: signalStat.timestamps)
+                            .accentColor(.color(for: idx))
                     )
                 }
             }
@@ -234,12 +205,13 @@ struct OccuranceGraphView_Previews: PreviewProvider {
         
         return Group {
             Unwrap(goodExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance), scale: .constant($0.scale))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]))
             }
             
             Unwrap(otherExample) {
-                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]), activeSignal: .constant(Mock.signalInstance), scale: .constant($0.scale))
+                MessageStatView(groupStats: $0, decoder: .constant(Mock.decoder[$0.group]))
             }
-        }.previewLayout(.fixed(width: 375, height: 170))
+        }.environmentObject(groupedSet.scale)
+        .previewLayout(.fixed(width: 375, height: 170))
     }
 }

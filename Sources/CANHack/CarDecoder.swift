@@ -121,6 +121,17 @@ public struct DecoderSignal: Codable, Equatable {
     public var valueTable: [DecoderValue] = []
 }
 
+public extension DecoderSignal.Location {
+    func decodeRawValue(_ data: [Byte]) -> UInt64 {
+                
+        var result = data.mergeBytes
+                
+        result = (result << (64 - len - startBit)) >> (64 - len)
+        
+        return result
+    }
+}
+
 public struct DecoderValue: Codable, Equatable {
     public init(value: Int = 0, label: String = "") {
         self.value = value

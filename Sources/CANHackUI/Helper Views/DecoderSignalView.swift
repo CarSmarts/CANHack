@@ -108,18 +108,16 @@ struct ConversionView: View {
 }
 
 struct DecoderSignalView: View {
-    internal init(decoderSignal: Binding<DecoderSignal>, selected: Binding<Bool> = .constant(false), index: Int, highlightColor: Color) {
+    internal init(decoderSignal: Binding<DecoderSignal>, selected: Binding<Bool> = .constant(false), index: Int) {
         self._decoderSignal = decoderSignal
         self._selected = selected
         
         self.index = index
-        self.highlightColor = highlightColor
     }
     
     @Binding var decoderSignal: DecoderSignal
     @Binding var selected: Bool
     let index: Int
-    let highlightColor: Color
     
     var summaryView: some View {
         let rectangle = RoundedRectangle(cornerRadius: 7.0, style: .continuous)
@@ -128,7 +126,7 @@ struct DecoderSignalView: View {
         
         return Text("\(decoderSignal.location.startBit): \(decoderSignal.location.len)")
         .padding(9.0)
-            .background(highlightColor.clipShape(rectangle))
+            .background(Color.accentColor.clipShape(rectangle))
         .overlay(selectionOverlay)
         .onTapGesture {
             self.selected.toggle()
@@ -161,7 +159,7 @@ struct DecoderSignalView_Previews: PreviewProvider {
         @State var decoderSignal = DecoderSignal(name: "", location: .init(startBit: 0, len: 3), conversion: .init(factor: 0, offset: 0, min: 0, max: 0), unit: "unit", recivingNode: "someNode")
         
         var body: some View {
-            DecoderSignalView(decoderSignal: $decoderSignal, selected: $selected, index: 0, highlightColor: .blue)
+            DecoderSignalView(decoderSignal: $decoderSignal, selected: $selected, index: 0)
         }
     }
     

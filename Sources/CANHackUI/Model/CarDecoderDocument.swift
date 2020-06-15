@@ -34,7 +34,6 @@ public class CarDecoderDocument: UIDocument, ObservableObject {
             print("normal ", terminator: "")
         }
         print()
-        print(documentState)
     }
     
     public override init(fileURL url: URL) {

@@ -29,7 +29,7 @@ public class GroupedStat<S: Signal, G: GroupingID>: InstanceList, ObservableObje
     
         // Side effect, observe each stat so we can update
         statSubs = stats.map { (stat) in
-            stat.newInstancePublisher.sink { (newInstance) in
+            stat.newInstancePublisher.sink { (_, newInstance) in
                 self.signalList.insert(newInstance)
                 self.objectWillChange.send()
             }
@@ -42,7 +42,7 @@ public class GroupedStat<S: Signal, G: GroupingID>: InstanceList, ObservableObje
             self.signalList.insert(instance)
         }
         
-        newStat.newInstancePublisher.sink { (newInstance) in
+        newStat.newInstancePublisher.sink { (_, newInstance) in
             self.signalList.insert(newInstance)
             self.objectWillChange.send()
         }.store(in: &statSubs)

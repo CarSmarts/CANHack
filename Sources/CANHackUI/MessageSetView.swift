@@ -11,6 +11,24 @@ import SwiftUI
 import CANHack
 import AppFolder
 
+public struct MessageStatView: View {
+    public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>) {
+        self.groupStats = groupStats
+        self._decoder = decoder
+    }
+    
+    @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
+    @Binding public var decoder: DecoderMessage
+        
+    public var body: some View {
+        VStack(alignment: .leading) {
+            MessageIDView(id: groupStats.group, decoder: $decoder)
+            
+            AdaptiveGraphView(groupStats: groupStats)
+        }
+    }
+}
+
 public struct MessageSetView: View {
     public init(document: MessageSetDocument, decoder: Binding<CarDecoder>) {
         self.document = document
@@ -29,31 +47,20 @@ public struct GroupedByIdView: View {
     @ObservedObject public var groupedSet: GroupedSignalSet<Message, MessageID>
     @Binding public var decoder: CarDecoder
     
-    @State var scale = OccuranceGraphScale(min: 0, max: 10)
-
     public init(groupedSet: GroupedSignalSet<Message, MessageID>, decoder: Binding<CarDecoder>) {
         self.groupedSet = groupedSet
         self._decoder = decoder
     }
-    
-    var scaleUpdatePublisher: AnyPublisher<OccuranceGraphScale, Never> {
-        groupedSet.newInstancePublisher.map { _ in () }
-        .prepend(())
-        .map {
-            self.groupedSet.scale
-        }.eraseToAnyPublisher()
-    }
-    
+        
     public var body: some View {
         List(groupedSet.groups) { id in
             ZStack {
-                MessageStatView(groupStats: self.groupedSet[id], decoder: self.$decoder[id], activeSignal: .constant(Mock.signalInstance), scale: self.$scale)
+                MessageStatView(groupStats: self.groupedSet[id], decoder: self.$decoder[id])
                 
                 NavigationLink(destination: MessageDetailView(stats: self.groupedSet[id], decoder: self.$decoder[id]), label: { EmptyView() })
             }
-        }.onReceive(scaleUpdatePublisher) { scale in
-            self.scale = scale
         }
+        .environmentObject(groupedSet.scale)
     }
 }
 

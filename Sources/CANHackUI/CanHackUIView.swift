@@ -17,6 +17,15 @@ public struct CanHackUIView: View {
 
     public init() { }
     
+    var chooseFileButton: some View {
+        Button(
+            action: {
+                self.picker.isPresented = true
+            },
+            label: { Text("Choose File") }
+        )
+    }
+    
     public var body: some View {
         NavigationView {
             Group {
@@ -25,12 +34,7 @@ public struct CanHackUIView: View {
                 }
             }
             .navigationBarTitle(manager.messageSetDocument?.localizedName ?? "CANHack")
-            .navigationBarItems(trailing: Button(
-                action: {
-                    self.picker.isPresented = true
-                },
-                label: { Text("Choose File") }
-            ))
+            .navigationBarItems(trailing: chooseFileButton)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

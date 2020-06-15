@@ -51,8 +51,9 @@ struct MessageDetailView: View {
                 VStack {
                     MessageIDView(id: stats.group, decoder: $decoder, canEdit: true)
                         
-                    OccuranceGraph(data: stats, scale: .constant(stats.scale))
-                        .overlay(ScrubView(data: stats, scale: stats.scale, activeSignal: $activeSignal))
+                    AdaptiveGraphView(groupStats: stats)
+                        .overlay(ScrubView(data: stats, activeSignal: $activeSignal))
+                    
                 }.padding()
 
                 HStack {
@@ -75,11 +76,16 @@ struct MessageDetailView: View {
             }.layoutPriority(1.0)
             
             Enumerating(decoder.signals) { (signal, idx) in
-                DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx, highlightColor: .color(for: idx))
+                VStack {
+                    SignalGraph(groupStats: stats, decoder: self.$decoder.signals[idx]).frame(height: 30.0)
+                    
+                    DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx)
+                }.accentColor(.color(for: idx))
             }
             
             Spacer()
         }
+        .environmentObject(stats.scale)
         .onAppear {
             if let first = stats.firstInstance {
                 self.activeSignal = first

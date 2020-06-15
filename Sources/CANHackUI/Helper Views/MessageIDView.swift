@@ -52,32 +52,3 @@ struct MessageIDView: View {
         }
     }
 }
-
-struct MessageStatView: View {
-    public init(groupStats: GroupedStat<Message, MessageID>, decoder: Binding<DecoderMessage>, activeSignal: Binding<SignalInstance<Message>>, scale: Binding<OccuranceGraphScale>) {
-        self.groupStats = groupStats
-        self._decoder = decoder
-        self._activeSignal = activeSignal
-        self._scale = scale
-    }
-    
-    @ObservedObject public var groupStats: GroupedStat<Message, MessageID>
-    @Binding public var decoder: DecoderMessage
-    @Binding public var scale: OccuranceGraphScale
-
-    @Binding var activeSignal: SignalInstance<Message>
-        
-    var body: some View {
-        VStack(alignment: .leading) {
-            MessageIDView(id: groupStats.group, decoder: $decoder)
-                
-            OccuranceGraph(data: self.groupStats, scale: self.$scale)
-        }
-    }
-}
-
-struct MessageStatView_Previews: PreviewProvider {
-    static var previews: some View {
-        return MessageSetView(document: MockMessageSetDocument(), decoder: .constant(Mock.decoder))
-    }
-}
