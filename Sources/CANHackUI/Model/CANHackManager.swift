@@ -6,6 +6,7 @@
 //  Copyright © 2020 Robert Smith. All rights reserved.
 //
 
+#if canImport(UIKit)
 import SwiftUI
 import Combine
 import CANHack
@@ -47,3 +48,5 @@ public class CANHackManager: ObservableObject {
         }
     }
 }
+
+#endif

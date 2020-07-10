@@ -5,6 +5,7 @@
 //  Created by Robert Smith on 5/26/20.
 //
 
+#if canImport(UIKit)
 import UIKit
 import SwiftUI
 import CANHack
@@ -64,3 +65,5 @@ public class CarDecoderDocument: UIDocument, ObservableObject {
         decoder = try jsonDecoder.decode(CarDecoder.self, from: contents as! Data)
     }
 }
+
+#endif

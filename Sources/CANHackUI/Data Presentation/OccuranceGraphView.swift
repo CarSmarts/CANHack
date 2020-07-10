@@ -33,6 +33,22 @@ extension Collection {
     }
 }
 
+struct OccuranceGraphLabel: View {
+    internal init(_ text: String) {
+        self.text = text
+    }
+    
+    let text: String
+    
+    var body: some View {
+        Text(text)
+        .modifier(Monospaced())
+        .padding(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 27.0)
+    }
+}
+
 struct OccuranceGraphRow: View {
     public var occurances: [Int]
     @EnvironmentObject var scale: GraphScale<Int>
@@ -139,6 +155,7 @@ struct ScrubView: View {
     var body: some View {
         GeometryReader { geo in
             Color.clear.contentShape(Rectangle())
+                .simultaneousGesture(TapGesture(count: 2))
                 .gesture(
                     DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
                     .onChanged({ value in
@@ -171,11 +188,7 @@ struct OccuranceGraph: View {
         VStack(alignment: .leading, spacing: 2) {
             VStack(alignment: .leading, spacing: 2) {
                 Enumerating(self.shortList) { signalStat, idx in
-                    Text(signalStat.signal.contentDescription)
-                    .modifier(Monospaced())
-                    .padding(.leading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(height: 27.0)
+                    OccuranceGraphLabel(signalStat.signal.contentDescription)
                     .background(
                         OccuranceGraphRow(occurances: signalStat.timestamps)
                             .accentColor(.color(for: idx))

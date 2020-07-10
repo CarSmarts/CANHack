@@ -17,6 +17,19 @@ class DecodedSignal {
         data = instanceList.signalList.mapSignal { message in
             decoder.location.decodeRawValue(message.contents)
         }.map { pair in SimpleGraphPoint(value: pair.0, timestamp: pair.1) }
+                   
+        valueData = [:]
+        
+        for instance in instanceList.signalList {
+            let message = instance.signal
+            let string = decoder.decodeTabelValue(message) ?? message.contentDescription
+            
+            valueData[string, default: []].append(instance.timestamp)
+        }
+        
+        sortedValueData = valueData.sorted { (lhs, rhs) in
+            lhs.key < rhs.key
+        }
     }
     
     var instanceList: GroupedStat<Message, MessageID>
@@ -29,6 +42,8 @@ class DecodedSignal {
     }
         
     var data: [SimpleGraphPoint<UInt64>]
+    var valueData: [String: [Timestamp]]
+    var sortedValueData: [(String, [Timestamp])]
 }
 
 struct SignalGraph: View {
@@ -45,7 +60,22 @@ struct SignalGraph: View {
     }
     
     var body: some View {
-        SimpleGraphRow(points: decodedSignal.data, yScale: decodedSignal.yScale)
+        Group {
+            if decoder.location.len > 3 {
+                SimpleGraphRow(points: decodedSignal.data, yScale: decodedSignal.yScale).frame(height: 37.0)
+            } else {
+                VStack(alignment: .leading, spacing: 2) {
+                    Enumerating(self.decodedSignal.sortedValueData) { pair, idx in
+                        OccuranceGraphLabel(pair.0)
+                            .background(
+                                OccuranceGraphRow(occurances: pair.1)
+                            .accentColor(.color(for: idx))
+                        )
+                    }
+                }
+                .compositingGroup()
+            }
+        }
     }
 }
 

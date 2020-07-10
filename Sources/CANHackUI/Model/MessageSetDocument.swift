@@ -5,6 +5,7 @@
 //  Created by Robert Smith on 5/26/20.
 //
 
+#if canImport(UIKit)
 import UIKit
 import CANHack
 
@@ -16,7 +17,9 @@ public class MessageSetDocument: UIDocument, ObservableObject {
         }
     }
     
-    public private(set) var groupedById = SignalSet<Message>().groupedById
+    public private(set) lazy var groupedById = {
+        signalSet.groupedById
+    }()
         
     func printState() {
         print("MessageSet: \(localizedName) ", terminator: "")
@@ -84,3 +87,5 @@ public class MessageSetDocument: UIDocument, ObservableObject {
 //        }
 //    }
 }
+
+#endif

@@ -77,7 +77,7 @@ struct MessageDetailView: View {
             
             Enumerating(decoder.signals) { (signal, idx) in
                 VStack {
-                    SignalGraph(groupStats: stats, decoder: self.$decoder.signals[idx]).frame(height: 30.0)
+                    SignalGraph(groupStats: stats, decoder: self.$decoder.signals[idx])
                         .overlay(ScrubView(data: stats, activeSignal: self.$activeSignal, snapToStat: false))
 
                     DecoderSignalView(decoderSignal: self.$decoder.signals[idx], selected: self.selectionBinding(for: idx), index: idx)

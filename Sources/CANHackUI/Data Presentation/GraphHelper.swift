@@ -37,8 +37,8 @@ public class GraphScale<Value: BinaryInteger>: ObservableObject {
         return max - min
     }
     
-    @Published public var min: Value
-    @Published public var max: Value
+    public var min: Value
+    public var max: Value
 }
 
 public extension GraphScale where Value == Int {
@@ -48,6 +48,7 @@ public extension GraphScale where Value == Int {
         sub = list.newInstancePublisher.map { list, _ in
             (list.firstTimestamp, list.lastTimestamp)
         }.sink { (first, last) in
+            self.objectWillChange.send()
             self.min = first
             self.max = last
         }
