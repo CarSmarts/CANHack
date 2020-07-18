@@ -26,6 +26,7 @@
 		730A8050247DE3AA009E00A5 /* AppFolder in Frameworks */ = {isa = PBXBuildFile; productRef = 730A804F247DE3AA009E00A5 /* AppFolder */; };
 		730A8052247DE82F009E00A5 /* CanHackUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8051247DE82F009E00A5 /* CanHackUIView.swift */; };
 		730A8055247DF33C009E00A5 /* MessageSetDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8054247DF33C009E00A5 /* MessageSetDocument.swift */; };
+		732A325924C3BEF400807EBC /* M2SmartParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732A325824C3BEF400807EBC /* M2SmartParser.swift */; };
 		7358E402249018F000013620 /* SmartCarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7358E401249018F000013620 /* SmartCarUI */; };
 		7358E4032490190F00013620 /* CarDecoderDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730A8044247DCF71009E00A5 /* CarDecoderDocument.swift */; };
 		7358E4062490520200013620 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7358E4042490508600013620 /* MessageDetailView.swift */; };
@@ -93,6 +94,7 @@
 		730A8049247DE33A009E00A5 /* CANHackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CANHackManager.swift; sourceTree = "<group>"; };
 		730A8051247DE82F009E00A5 /* CanHackUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanHackUIView.swift; sourceTree = "<group>"; };
 		730A8054247DF33C009E00A5 /* MessageSetDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSetDocument.swift; sourceTree = "<group>"; };
+		732A325824C3BEF400807EBC /* M2SmartParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = M2SmartParser.swift; path = ../../../SmartCar/SmartCar/Comunication/M2SmartParser.swift; sourceTree = "<group>"; };
 		7358E4042490508600013620 /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
 		735A832B2497DA6A00696782 /* SimpleGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleGraphView.swift; sourceTree = "<group>"; };
 		735A832F2497E87700696782 /* GraphHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphHelper.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				OBJ_9 /* Byte.swift */,
 				OBJ_11 /* Message.swift */,
 				OBJ_12 /* MessageID.swift */,
+				732A325824C3BEF400807EBC /* M2SmartParser.swift */,
 				OBJ_13 /* Parser.swift */,
 				OBJ_10 /* GVRET.swift */,
 				OBJ_14 /* Signal Occurance */,
@@ -420,6 +423,7 @@
 				OBJ_44 /* MessageID.swift in Sources */,
 				OBJ_45 /* Parser.swift in Sources */,
 				OBJ_46 /* GroupedSignalSet.swift in Sources */,
+				732A325924C3BEF400807EBC /* M2SmartParser.swift in Sources */,
 				OBJ_47 /* ObservableArray.swift in Sources */,
 				OBJ_48 /* SignalInstance.swift in Sources */,
 				730A803D247CAFA3009E00A5 /* CarDecoder.swift in Sources */,
