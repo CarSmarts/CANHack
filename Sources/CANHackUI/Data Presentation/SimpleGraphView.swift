@@ -119,12 +119,20 @@ struct ByteGraphRow: View {
     let data: ByteRowData
     let colorChoice: Int
     
+    /// Because `uniqueBytes` returns a Dictionary, its sort order is unstable..
+    /// Sort it before showing it to the user
+    private var sortedUniqueBytes: [Dictionary<Byte, [Timestamp]>.Element] {
+        data.uniqueBytes.sorted(by: { (pair1, pair2) in
+            pair1.key < pair2.key
+        })
+    }
+    
     var body: some View {
         Group {
             if data.uniqueBytes.count > 3 {
                 SimpleGraphRow(points: data.points)
             } else {
-                Enumerating(data.uniqueBytes) { pair, idx in
+                Enumerating(sortedUniqueBytes) { pair, idx in
                     Text(pair.0.hex)
                     .modifier(Monospaced())
                     .padding(.leading)

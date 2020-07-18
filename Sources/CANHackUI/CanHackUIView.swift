@@ -42,6 +42,6 @@ public struct CanHackUIView: View {
 
 struct CanHackUIView_Previews: PreviewProvider {
     static var previews: some View {
-        CanHackUIView()
+        CanHackUIView().environmentObject(Mock.globalManager)
     }
 }
